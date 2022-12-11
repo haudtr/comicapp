@@ -1,3 +1,4 @@
+import 'package:comic_app/comic_read_page.dart';
 import 'package:comic_app/detail_comic.dart';
 
 import 'package:flutter/material.dart';
