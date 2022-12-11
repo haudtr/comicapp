@@ -1,8 +1,7 @@
+import 'package:comic_app/home_comic.dart';
+import 'package:comic_app/signup.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -17,15 +16,13 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Container(
+        child: SizedBox(
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
           child: SingleChildScrollView(
             child: Column(
               children: [
-                Container(
-                  child: Image.asset("assets/images/image 6.png"),
-                ),
+                Image.asset("assets/images/image 6.png"),
                 Padding(
                   padding: const EdgeInsets.all(14.0),
                   child: Form(
@@ -44,8 +41,8 @@ class _LoginState extends State<Login> {
                             ),
                             onSaved: (String? value) {},
                             validator: (String? value) {
-                              if (value!.isEmpty)
-                                return "Vui long nhap email";
+                              if (value!.isEmpty) return "Vui long nhap email";
+                              return null;
                             },
                           ),
                         ),
@@ -65,12 +62,14 @@ class _LoginState extends State<Login> {
                               ),
                               onSaved: (String? value) {},
                               validator: (String? value) {
-                                if (value!.isEmpty) ;
-                                return "Vui long nhap mat khau";
+                                if (value!.isEmpty) {
+                                  return "Vui long nhap mat khau";
+                                }
+                                return null;
                               }),
                         ),
                         Container(
-                          padding: EdgeInsets.all(12),
+                          padding: const EdgeInsets.all(12),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
@@ -100,10 +99,16 @@ class _LoginState extends State<Login> {
                                     borderRadius: BorderRadius.circular(12))),
                             onPressed: () {
                               setState(() {
-                                if (_formKey.currentState!.validate()){}
+                                if (_formKey.currentState!.validate()) {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: ((context) =>
+                                              const HomeComic())));
+                                }
                               });
                             },
-                            child: Text(
+                            child: const Text(
                               "Đăng nhập",
                               style: TextStyle(fontSize: 20),
                             ),
@@ -115,13 +120,13 @@ class _LoginState extends State<Login> {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(16.0),
-                  child: Container(
+                  child: SizedBox(
                     width: MediaQuery.of(context).size.width,
                     height: 30,
                     child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Container(
+                          SizedBox(
                             width: MediaQuery.of(context).size.width / 6,
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -137,7 +142,7 @@ class _LoginState extends State<Login> {
                             "Hoặc đăng nhập bằng cách",
                             style: TextStyle(fontSize: 16),
                           ),
-                          Container(
+                          SizedBox(
                             width: MediaQuery.of(context).size.width / 6,
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -168,10 +173,10 @@ class _LoginState extends State<Login> {
                           borderRadius: BorderRadius.circular(12),
                         ),
                         alignment: Alignment.center,
-                        padding: EdgeInsets.all(14),
+                        padding: const EdgeInsets.all(14),
                         width: MediaQuery.of(context).size.width,
                         height: 60,
-                        child: Text(
+                        child: const Text(
                           "Google",
                           style: TextStyle(fontSize: 20, color: Colors.red),
                         ),
@@ -195,10 +200,10 @@ class _LoginState extends State<Login> {
                           borderRadius: BorderRadius.circular(12),
                         ),
                         alignment: Alignment.center,
-                        padding: EdgeInsets.all(14),
+                        padding: const EdgeInsets.all(14),
                         width: MediaQuery.of(context).size.width,
                         height: 60,
-                        child: Text(
+                        child: const Text(
                           "Facebook",
                           style: TextStyle(fontSize: 20, color: Colors.blue),
                         ),
@@ -207,7 +212,7 @@ class _LoginState extends State<Login> {
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(12),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -215,26 +220,24 @@ class _LoginState extends State<Login> {
                         TextSpan(
                           children: [
                             const TextSpan(
-                              style:  TextStyle(
-                                fontSize: 18
-                              ),
-                              text: "Bạn chưa có tài khoản?"),
+                                style: TextStyle(fontSize: 18),
+                                text: "Bạn chưa có tài khoản?"),
                             TextSpan(
                               style: const TextStyle(
-                                color: Colors.blue,
-                                fontSize: 18
-                              ),
+                                  color: Colors.blue, fontSize: 18),
                               text: " Đăng ký",
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () async {
                                   //on tap code here, you can navigate to other page or URL
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: ((context) =>
+                                              const SignUp())));
                                 },
                             ),
                             const TextSpan(
-                              style:  TextStyle(
-                                fontSize: 18
-                              ),
-                              text: " ở đây"),
+                                style: TextStyle(fontSize: 18), text: " ở đây"),
                           ],
                         ),
                       ),

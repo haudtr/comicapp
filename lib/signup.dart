@@ -1,8 +1,5 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -17,15 +14,28 @@ class _SignUpState extends State<SignUp> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Container(
+        child: SizedBox(
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
           child: SingleChildScrollView(
             child: Column(
               children: [
                 Container(
-                  child: Image.asset("assets/images/image 6.png"),
+                  margin: const EdgeInsets.only(left: 14),
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height * (1 / 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      IconButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          icon: const Icon(Icons.arrow_back_ios))
+                    ],
+                  ),
                 ),
+                Image.asset("assets/images/image 6.png"),
                 Padding(
                   padding: const EdgeInsets.all(14.0),
                   child: Form(
@@ -44,8 +54,10 @@ class _SignUpState extends State<SignUp> {
                             ),
                             onSaved: (String? value) {},
                             validator: (String? value) {
-                              if (value!.isEmpty)
+                              if (value!.isEmpty) {
                                 return "Vui long nhap ten tai khoan";
+                              }
+                              return null;
                             },
                           ),
                         ),
@@ -65,6 +77,7 @@ class _SignUpState extends State<SignUp> {
                             onSaved: (String? value) {},
                             validator: (String? value) {
                               if (value!.isEmpty) return "Vui long nhap email";
+                              return null;
                             },
                           ),
                         ),
@@ -83,8 +96,10 @@ class _SignUpState extends State<SignUp> {
                             ),
                             onSaved: (String? value) {},
                             validator: (String? value) {
-                              if (value!.isEmpty)
+                              if (value!.isEmpty) {
                                 return "Vui long nhap so dien thoai";
+                              }
+                              return null;
                             },
                           ),
                         ),
@@ -104,8 +119,10 @@ class _SignUpState extends State<SignUp> {
                               ),
                               onSaved: (String? value) {},
                               validator: (String? value) {
-                                if (value!.isEmpty) ;
-                                return "Vui long nhap mat khau";
+                                if (value!.isEmpty) {
+                                  return "Vui long nhap mat khau";
+                                }
+                                return null;
                               }),
                         ),
                         const SizedBox(
@@ -124,12 +141,14 @@ class _SignUpState extends State<SignUp> {
                               ),
                               onSaved: (String? value) {},
                               validator: (String? value) {
-                                if (value!.isEmpty) ;
-                                return "Vui long nhap mat khau";
+                                if (value!.isEmpty) {
+                                  return "Vui long nhap mat khau";
+                                }
+                                return null;
                               }),
                         ),
                         Container(
-                          padding: EdgeInsets.all(12),
+                          padding: const EdgeInsets.all(12),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
@@ -159,10 +178,10 @@ class _SignUpState extends State<SignUp> {
                                     borderRadius: BorderRadius.circular(12))),
                             onPressed: () {
                               setState(() {
-                                if (_formKey.currentState!.validate()){}
+                                if (_formKey.currentState!.validate()) {}
                               });
                             },
-                            child: Text(
+                            child: const Text(
                               "Đăng ký",
                               style: TextStyle(fontSize: 20),
                             ),
@@ -173,7 +192,7 @@ class _SignUpState extends State<SignUp> {
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(12),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
