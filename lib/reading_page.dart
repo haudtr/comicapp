@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:comic_app/detail_comic.dart';
 import 'package:flutter/material.dart';
 
@@ -20,6 +22,17 @@ class _ReadingPageScreenState extends State<ReadingPageScreen> {
   late Color loginColor;
   late Color signInColor;
   int SelectedUI = 1;
+  // Initial Selected Value
+  String dropdownvalue = 'Item 1';
+
+  // List of items in our dropdown menu
+  var items = [
+    'Item 1',
+    'Item 2',
+    'Item 3',
+    'Item 4',
+    'Item 5',
+  ];
   @override
   void initState() {
     super.initState();
@@ -54,41 +67,6 @@ class _ReadingPageScreenState extends State<ReadingPageScreen> {
                   ],
                 ),
               ),
-              // ToggleButtons(
-              //   borderRadius: BorderRadius.circular(10),
-              //   selectedColor: Colors.white,
-              //   fillColor: Colors.grey,
-              //   isSelected: _isSelected,
-              //   onPressed: (int index) {
-              //     setState(() {
-              //       for (int i = 0; i < _isSelected.length; i++) {
-              //         _isSelected[i] = i == index;
-              //       }
-              //     });
-              //   },
-              //   children: [
-              //     Padding(
-              //       padding: const EdgeInsets.all(8.0),
-              //       child: SizedBox(
-              //           width: MediaQuery.of(context).size.width / 5,
-              //           child: const Center(
-              //               child: Text(
-              //             "Classic UI",
-              //             style: TextStyle(fontSize: 16),
-              //           ))),
-              //     ),
-              //     Padding(
-              //       padding: const EdgeInsets.all(8.0),
-              //       child: SizedBox(
-              //           width: MediaQuery.of(context).size.width / 5,
-              //           child: const Center(
-              //               child: Text(
-              //             "Slide UI",
-              //             style: TextStyle(fontSize: 16),
-              //           ))),
-              //     ),
-              //   ],
-              // ),
               Container(
                 width: width,
                 height: height,
@@ -171,10 +149,86 @@ class _ReadingPageScreenState extends State<ReadingPageScreen> {
                   ],
                 ),
               ),
+              const SizedBox(
+                height: 5,
+              ),
+              Expanded(child: SelectedUI == 1 ? uiSelection() : uiSelected2()),
             ],
           ),
         ),
       ),
+      bottomNavigationBar: Container(
+        height: 40,
+        child: SizedBox(
+          width: MediaQuery.of(context).size.width,
+          child: Container(
+            // width: MediaQuery.of(context).size.width / 4,
+
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10), color: Colors.grey),
+            child: Center(
+              child: DropdownButtonHideUnderline(
+                child: DropdownButton(
+                  borderRadius: BorderRadius.circular(10),
+                  iconSize: 0.0,
+                  icon: const Visibility(
+                    visible: false,
+                    child: Icon(Icons.arrow_downward),
+                  ),
+                  value: dropdownvalue,
+                  items: items.map((String items) {
+                    return DropdownMenuItem(
+                      value: items,
+                      child: Text(items),
+                    );
+                  }).toList(),
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      dropdownvalue = newValue!;
+                    });
+                  },
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
     );
+  }
+
+  uiSelection() {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width,
+      child: Column(
+        children: [
+          const Text(
+            "Chuong 3: Ac mong",
+            style: TextStyle(fontSize: 22),
+          ),
+          const SizedBox(
+            height: 15,
+          ),
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Image.asset("assets/images/image 3.png"),
+                  Image.asset("assets/images/image 2.png"),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+
+          // DropdownMenuItem(child: child)
+        ],
+      ),
+    );
+  }
+
+  uiSelected2() {
+    return const SizedBox();
   }
 }
