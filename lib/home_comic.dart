@@ -125,7 +125,7 @@ class _HomeComicState extends State<HomeComic> {
                       child: ClipRRect(
                           borderRadius: BorderRadius.circular(20),
                           child: Image.asset(
-                            "$i",
+                            i,
                             fit: BoxFit.cover,
                             width: size.width / 6,
                           )),
