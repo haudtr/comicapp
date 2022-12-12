@@ -2,14 +2,14 @@ import 'package:comic_app/login.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
-class SignUp extends StatefulWidget {
-  const SignUp({super.key});
+class SignUpScreen extends StatefulWidget {
+  const SignUpScreen({super.key});
 
   @override
-  State<SignUp> createState() => _SignUpState();
+  State<SignUpScreen> createState() => _SignUpScreenState();
 }
 
-class _SignUpState extends State<SignUp> {
+class _SignUpScreenState extends State<SignUpScreen> {
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
@@ -178,7 +178,14 @@ class _SignUpState extends State<SignUp> {
                         borderRadius: BorderRadius.circular(12))),
                 onPressed: () {
                   setState(() {
-                    if (_formKey.currentState!.validate()) {}
+                    if (_formKey.currentState!.validate()) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const LoginScreen(),
+                        ),
+                      );
+                    }
                   });
                 },
                 child: const Text(

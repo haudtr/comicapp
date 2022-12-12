@@ -1,4 +1,5 @@
 import 'package:comic_app/detail_comic.dart';
+import 'package:comic_app/home_comic.dart';
 import 'package:comic_app/home_screen_anmie.dart';
 import 'package:comic_app/login.dart';
 import 'package:comic_app/reading_page.dart';
@@ -28,7 +29,7 @@ class MyApp extends StatelessWidget {
         color: Colors.white,
       )),
       darkTheme: ThemeData.dark(),
-      home: const DetailComic(),
+      home: const HomeComic(),
     );
   }
 }

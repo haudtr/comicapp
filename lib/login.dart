@@ -3,14 +3,14 @@ import 'package:comic_app/signup.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
-class Login extends StatefulWidget {
-  const Login({super.key});
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
 
   @override
-  State<Login> createState() => _LoginState();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginState extends State<Login> {
+class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
@@ -22,12 +22,12 @@ class _LoginState extends State<Login> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                logo(),
-                loginForm(),
-                dividerLine(),
-                loginWithGoogle(),
-                loginWithFacebook(),
-                signIn(),
+                _buildLogo(context),
+                _buildLoginForm(context),
+                _buildDividerLine(context),
+                _buildLoginWithGoogle(context),
+                _buildLoginWithFacebook(context),
+                _buildSignUp(context),
               ],
             ),
           ),
@@ -36,11 +36,11 @@ class _LoginState extends State<Login> {
     );
   }
 
-  logo() {
+  Widget _buildLogo(BuildContext context) {
     return Image.asset("assets/images/image 6.png");
   }
 
-  loginForm() {
+  Widget _buildLoginForm(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(14.0),
       child: Form(
@@ -121,7 +121,7 @@ class _LoginState extends State<Login> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: ((context) => const HomeComic())));
+                              builder: ((context) => const HomeComicScreen())));
                     }
                   });
                 },
@@ -137,7 +137,7 @@ class _LoginState extends State<Login> {
     );
   }
 
-  dividerLine() {
+  Widget _buildDividerLine(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: SizedBox(
@@ -178,7 +178,7 @@ class _LoginState extends State<Login> {
     );
   }
 
-  loginWithGoogle() {
+  Widget _buildLoginWithGoogle(BuildContext context) {
     return GestureDetector(
       onTap: () {},
       child: Padding(
@@ -208,7 +208,7 @@ class _LoginState extends State<Login> {
     );
   }
 
-  loginWithFacebook() {
+  Widget _buildLoginWithFacebook(BuildContext context) {
     return GestureDetector(
       onTap: () {},
       child: Padding(
@@ -238,7 +238,7 @@ class _LoginState extends State<Login> {
     );
   }
 
-  signIn() {
+  Widget _buildSignUp(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(12),
       child: Row(
@@ -259,7 +259,7 @@ class _LoginState extends State<Login> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: ((context) => const SignUp())));
+                              builder: ((context) => const SignUpScreen())));
                     },
                 ),
                 const TextSpan(style: TextStyle(fontSize: 18), text: " ở đây"),

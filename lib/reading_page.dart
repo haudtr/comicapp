@@ -1,6 +1,3 @@
-import 'dart:html';
-
-import 'package:comic_app/detail_comic.dart';
 import 'package:flutter/material.dart';
 
 class ReadingPageScreen extends StatefulWidget {
