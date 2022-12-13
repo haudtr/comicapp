@@ -1,3 +1,4 @@
+import 'package:comic_app/reading_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
@@ -33,174 +34,46 @@ class _DetailComicState extends State<DetailComic> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        leading: const Padding(
+          padding: EdgeInsets.only(left: 20),
+          child: BackButton(
+            color: Colors.black,
+          ),
+        ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 20),
+            child: IconButton(
+              onPressed: () {},
+              icon: const Icon(
+                Icons.more_horiz,
+                color: Colors.black,
+              ),
+            ),
+          ),
+        ],
+        elevation: 0,
+      ),
       body: SafeArea(
         child: Column(
           children: [
-            Container(
-              margin: const EdgeInsets.only(left: 20, right: 20),
-              width: MediaQuery.of(context).size.width,
-              height: 40,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  IconButton(
-                    onPressed: () {},
-                    icon: const Icon(
-                      Icons.arrow_back,
-                      size: 30,
-                    ),
-                  ),
-                  IconButton(
-                      onPressed: () {},
-                      icon: const Icon(
-                        Icons.view_list,
-                        size: 30,
-                      ))
-                ],
-              ),
-            ),
-            Image.asset("assets/images/image 5.png"),
+            _buildCoverImage(context),
             const SizedBox(
               height: 10,
             ),
-            Container(
-              padding: const EdgeInsets.only(left: 30, right: 30),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const SizedBox(
-                    child: Text(
-                      "Jujutsu kaisen",
-                      style: TextStyle(fontSize: 25),
-                    ),
-                  ),
-                  ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor:
-                            const Color.fromARGB(255, 146, 198, 224),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25),
-                        ),
-                      ),
-                      onPressed: () {},
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: const [
-                          Icon(Icons.favorite),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          Text("61"),
-                        ],
-                      ))
-                ],
-              ),
-            ),
-            // ToggleButtons(
-            //   borderRadius: BorderRadius.circular(20),
-            //   isSelected: _selections,
-            //   onPressed: (int index) {
-            //     setState(() {
-            //       _selections[index] = !_selections[index];
-            //     });
-            //   },
-            //   children: const [
-            //     Text("Mo ta"),
-            //     Text("Danh sach chuong"),
-            //   ],
-            // ),
+            _buildComicTitleAndFavoriteButton(context),
             const SizedBox(
               height: 10,
             ),
-            Container(
-              margin: const EdgeInsets.only(left: 20, right: 20),
-              width: MediaQuery.of(context).size.width,
-              height: 40,
-              decoration: BoxDecoration(
-                border:
-                    Border.all(color: const Color.fromARGB(255, 179, 189, 194)),
-                color: Colors.white,
-                borderRadius: const BorderRadius.all(
-                  Radius.circular(50.0),
-                ),
-              ),
-              child: Stack(
-                children: [
-                  AnimatedAlign(
-                    alignment: Alignment(xAlign, 0),
-                    duration: const Duration(milliseconds: 400),
-                    child: Container(
-                      width: MediaQuery.of(context).size.width * 0.5,
-                      height: 40,
-                      decoration: const BoxDecoration(
-                        color: Colors.grey,
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(50.0),
-                        ),
-                      ),
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        xAlign = loginAlign;
-                        loginColor = selectedColor;
-
-                        signInColor = normalColor;
-                        selectedItem = 1;
-                      });
-                    },
-                    child: Align(
-                      alignment: const Alignment(-1, 0),
-                      child: Container(
-                        width: MediaQuery.of(context).size.width * 0.4,
-                        color: Colors.transparent,
-                        alignment: Alignment.center,
-                        child: Text(
-                          'Mo ta',
-                          style: TextStyle(
-                              color: loginColor,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18),
-                        ),
-                      ),
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        xAlign = signInAlign;
-                        signInColor = selectedColor;
-
-                        loginColor = normalColor;
-                        selectedItem = 0;
-                      });
-                    },
-                    child: Align(
-                      alignment: const Alignment(1, 0),
-                      child: Container(
-                        width: MediaQuery.of(context).size.width * 0.4,
-                        color: Colors.transparent,
-                        alignment: Alignment.center,
-                        child: Text(
-                          'Danh sach chuong',
-                          style: TextStyle(
-                            color: signInColor,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            _buildOptionButton(context),
             const SizedBox(
               height: 10,
             ),
             Expanded(
-              child: selectedItem == 1 ? description() : chapList(),
+              child: selectedItem == 1
+                  ? _buildDescription(context)
+                  : _buildChapList(context),
             ),
           ],
         ),
@@ -208,7 +81,7 @@ class _DetailComicState extends State<DetailComic> {
     );
   }
 
-  description() {
+  Widget _buildDescription(BuildContext context) {
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
       child: Padding(
@@ -367,7 +240,7 @@ class _DetailComicState extends State<DetailComic> {
                   ],
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 child: Text(
                     "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."),
               )
@@ -378,7 +251,7 @@ class _DetailComicState extends State<DetailComic> {
     );
   }
 
-  chapList() {
+  Widget _buildChapList(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(left: 30, right: 30),
       child: Column(
@@ -399,7 +272,14 @@ class _DetailComicState extends State<DetailComic> {
                           height: 5,
                         ),
                         GestureDetector(
-                          onTap: () {},
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const ReadingPageScreen(),
+                              ),
+                            );
+                          },
                           child: SizedBox(
                             width: MediaQuery.of(context).size.width,
                             height: 50,
@@ -452,6 +332,131 @@ class _DetailComicState extends State<DetailComic> {
                       ],
                     )
                 ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCoverImage(BuildContext context) {
+    return Image.asset("assets/images/image 5.png");
+  }
+
+  Widget _buildComicTitleAndFavoriteButton(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.only(left: 30, right: 30),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          const SizedBox(
+            child: Text(
+              "Jujutsu kaisen",
+              style: TextStyle(fontSize: 25),
+            ),
+          ),
+          ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color.fromARGB(255, 146, 198, 224),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(25),
+                ),
+              ),
+              onPressed: () {},
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: const [
+                  Icon(Icons.favorite),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  Text("61"),
+                ],
+              ))
+        ],
+      ),
+    );
+  }
+
+  Widget _buildOptionButton(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(left: 20, right: 20),
+      width: MediaQuery.of(context).size.width,
+      height: 40,
+      decoration: BoxDecoration(
+        border: Border.all(color: const Color.fromARGB(255, 179, 189, 194)),
+        color: Colors.white,
+        borderRadius: const BorderRadius.all(
+          Radius.circular(50.0),
+        ),
+      ),
+      child: Stack(
+        children: [
+          AnimatedAlign(
+            alignment: Alignment(xAlign, 0),
+            duration: const Duration(milliseconds: 400),
+            child: Container(
+              width: MediaQuery.of(context).size.width * 0.5,
+              height: 40,
+              decoration: const BoxDecoration(
+                color: Colors.grey,
+                borderRadius: BorderRadius.all(
+                  Radius.circular(50.0),
+                ),
+              ),
+            ),
+          ),
+          GestureDetector(
+            onTap: () {
+              setState(() {
+                xAlign = loginAlign;
+                loginColor = selectedColor;
+
+                signInColor = normalColor;
+                selectedItem = 1;
+              });
+            },
+            child: Align(
+              alignment: const Alignment(-1, 0),
+              child: Container(
+                width: MediaQuery.of(context).size.width * 0.4,
+                color: Colors.transparent,
+                alignment: Alignment.center,
+                child: Text(
+                  'Mo ta',
+                  style: TextStyle(
+                      color: loginColor,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18),
+                ),
+              ),
+            ),
+          ),
+          GestureDetector(
+            onTap: () {
+              setState(() {
+                xAlign = signInAlign;
+                signInColor = selectedColor;
+
+                loginColor = normalColor;
+                selectedItem = 0;
+              });
+            },
+            child: Align(
+              alignment: const Alignment(1, 0),
+              child: Container(
+                width: MediaQuery.of(context).size.width * 0.4,
+                color: Colors.transparent,
+                alignment: Alignment.center,
+                child: Text(
+                  'Danh sach chuong',
+                  style: TextStyle(
+                    color: signInColor,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
+                ),
               ),
             ),
           ),

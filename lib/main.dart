@@ -1,12 +1,11 @@
-
 import 'package:comic_app/detail_comic.dart';
+import 'package:comic_app/home_comic.dart';
 import 'package:comic_app/home_screen_anmie.dart';
 import 'package:comic_app/login.dart';
+import 'package:comic_app/reading_page.dart';
 import 'package:comic_app/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:device_preview/device_preview.dart';
-
-
 
 void main() => runApp(
       DevicePreview(
@@ -27,10 +26,9 @@ class MyApp extends StatelessWidget {
       builder: DevicePreview.appBuilder,
       theme: ThemeData(
           appBarTheme: const AppBarTheme(
-            color:Colors.white,
-          )),
+        color: Colors.white,
+      )),
       darkTheme: ThemeData.dark(),
-
       home: const HomeComic(),
     );
   }
