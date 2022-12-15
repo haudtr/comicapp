@@ -426,9 +426,10 @@ class _DetailComicState extends State<DetailComic> {
                 child: Text(
                   'Mo ta',
                   style: TextStyle(
-                      color: loginColor,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18),
+                    color: loginColor,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
                 ),
               ),
             ),
@@ -454,7 +455,7 @@ class _DetailComicState extends State<DetailComic> {
                   style: TextStyle(
                     color: signInColor,
                     fontWeight: FontWeight.bold,
-                    fontSize: 18,
+                    fontSize: 16,
                   ),
                 ),
               ),

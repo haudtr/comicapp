@@ -18,7 +18,7 @@ class _ReadingPageScreenState extends State<ReadingPageScreen> {
   late double xAlign;
   late Color loginColor;
   late Color signInColor;
-  int SelectedUI = 1;
+  int selectedUI = 1;
   // Initial Selected Value
   String dropdownvalue = 'Item 1';
 
@@ -42,25 +42,25 @@ class _ReadingPageScreenState extends State<ReadingPageScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: SizedBox(
-          width: MediaQuery.of(context).size.width,
-          child: Column(
-            children: [
-              appBar(),
-              const SizedBox(
-                height: 5,
-              ),
-              selectedUIButton(),
-              Expanded(child: SelectedUI == 1 ? uiSelection() : uiSelected2()),
-            ],
-          ),
+        child: Column(
+          children: [
+            _buildAppBar(context),
+            const SizedBox(
+              height: 5,
+            ),
+            _buildSelectedUIButton(context),
+            Expanded(
+                child: selectedUI == 1
+                    ? _buildClassicUI(context)
+                    : _buildSlideUI(context)),
+          ],
         ),
       ),
-      bottomNavigationBar: changeChapterBar(),
+      bottomNavigationBar: _buildChangeChapterBar(context),
     );
   }
 
-  appBar() {
+  Widget _buildAppBar(BuildContext context) {
     return SizedBox(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -80,7 +80,7 @@ class _ReadingPageScreenState extends State<ReadingPageScreen> {
     );
   }
 
-  selectedUIButton() {
+  Widget _buildSelectedUIButton(BuildContext context) {
     return Container(
       width: width,
       height: height,
@@ -113,7 +113,7 @@ class _ReadingPageScreenState extends State<ReadingPageScreen> {
                 loginColor = selectedColor;
 
                 signInColor = normalColor;
-                SelectedUI = 1;
+                selectedUI = 1;
               });
             },
             child: Align(
@@ -140,7 +140,7 @@ class _ReadingPageScreenState extends State<ReadingPageScreen> {
                 signInColor = selectedColor;
 
                 loginColor = normalColor;
-                SelectedUI = 0;
+                selectedUI = 0;
               });
             },
             child: Align(
@@ -165,72 +165,69 @@ class _ReadingPageScreenState extends State<ReadingPageScreen> {
     );
   }
 
-  uiSelection() {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width,
-      child: Column(
-        children: [
-          const Text(
-            "Chuong 3: Ac mong",
-            style: TextStyle(fontSize: 22),
-          ),
-          const SizedBox(
-            height: 15,
-          ),
-          Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Image.asset("assets/images/image 3.png"),
-                  Image.asset("assets/images/image 2.png"),
-                ],
-              ),
+  Widget _buildClassicUI(BuildContext context) {
+    return Column(
+      children: [
+        const Text(
+          "Chuong 3: Ac mong",
+          style: TextStyle(fontSize: 22),
+        ),
+        const SizedBox(
+          height: 15,
+        ),
+        Expanded(
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Image.asset("assets/images/image 3.png"),
+                Image.asset("assets/images/image 2.png"),
+              ],
             ),
           ),
-          const SizedBox(
-            height: 10,
-          ),
+        ),
+        const SizedBox(
+          height: 10,
+        ),
 
-          // DropdownMenuItem(child: child)
-        ],
-      ),
+        // DropdownMenuItem(child: child)
+      ],
     );
   }
 
-  uiSelected2() {
+  Widget _buildSlideUI(BuildContext context) {
     return const SizedBox();
   }
 
-  changeChapterBar() {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      height: 40,
-      // width: MediaQuery.of(context).size.width / 4,
-
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10), color: Colors.grey),
-      child: Center(
-        child: DropdownButtonHideUnderline(
-          child: DropdownButton(
-            alignment: Alignment.topCenter,
-            borderRadius: BorderRadius.circular(10),
-            iconSize: 0.0,
-            icon: const Visibility(
-              visible: false,
-              child: Icon(Icons.arrow_downward),
+  Widget _buildChangeChapterBar(BuildContext context) {
+    return SingleChildScrollView(
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Center(
+          child: DropdownButtonHideUnderline(
+            child: DropdownButton(
+              alignment: Alignment.topCenter,
+              borderRadius: BorderRadius.circular(10),
+              iconSize: 0.0,
+              icon: const Visibility(
+                visible: false,
+                child: Icon(Icons.arrow_downward),
+              ),
+              value: dropdownvalue,
+              items: items.map((String items) {
+                return DropdownMenuItem(
+                  value: items,
+                  child: Text(items),
+                );
+              }).toList(),
+              onChanged: (String? newValue) {
+                setState(() {
+                  dropdownvalue = newValue!;
+                });
+              },
             ),
-            value: dropdownvalue,
-            items: items.map((String items) {
-              return DropdownMenuItem(
-                value: items,
-                child: Text(items),
-              );
-            }).toList(),
-            onChanged: (String? newValue) {
-              setState(() {
-                dropdownvalue = newValue!;
-              });
-            },
           ),
         ),
       ),

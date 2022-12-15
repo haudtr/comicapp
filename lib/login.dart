@@ -1,4 +1,4 @@
-import 'package:comic_app/home_comic.dart';
+import 'package:comic_app/home_screen_anmie.dart';
 import 'package:comic_app/signup.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -121,7 +121,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: ((context) => const HomeComicScreen())));
+                              builder: ((context) => const HomeComic())));
                     }
                   });
                 },
