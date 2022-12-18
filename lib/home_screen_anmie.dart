@@ -1,4 +1,9 @@
+// import 'dart:html';
+import 'package:provider/provider.dart';
+
 import 'package:carousel_slider/carousel_slider.dart';
+// import 'package:comic_app/models/comic.dart';
+import 'package:comic_app/provider/comicProvider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
@@ -17,38 +22,22 @@ class _HomeComicState extends State<HomeComic> {
   int _selectedIndex = 0;
   int _current = 0;
   final CarouselController _controller = CarouselController();
-  final List<String> listview = [
-    "images/img_1.png",
-    "images/img_2.png",
-    "images/img_3.png",
-    "images/img_3.png"
-  ];
-  final List<String> listview2 = [
-    "assets/images/img_8.png",
-    "assets/images/img_11.png",
-    "assets/images/img_8.png",
-    "assets/images/img_11.png",
-    "assets/images/img_11.png",
-    "assets/images/img_11.png"
-  ];
-  final List<String> listview1 = [
-    "assets/images/img_4.png",
-    "assets/images/img_5.png",
-    "assets/images/img_5.png",
-    "assets/images/img_4.png",
-    "assets/images/img_4.png",
-    "assets/images/img_4.png",
-    "assets/images/img_4.png",
-    "assets/images/img_4.png",
-    "assets/images/img_4.png",
-    "assets/images/img_4.png",
-    "assets/images/img_4.png",
-  ];
-  List<String> genres = ["Action", "Crime", "Comedy", "Drama", "Horror"];
+  bool iLoading = true;
 
   @override
   Widget build(BuildContext context) {
+    var comicProvider = Provider.of<ComicProvider>(context);
+    if (iLoading) {
+      (() async {
+        await comicProvider.getList();
+        await comicProvider.getTopList();
+        setState(() {
+          iLoading = false;
+        });
+      })();
+    }
     var size = MediaQuery.of(context).size;
+    // print(comicProvider.list);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -135,11 +124,19 @@ class _HomeComicState extends State<HomeComic> {
                   });
                 },
               ),
-              items: listview.map((i) {
+              items: comicProvider.listTop5.map((i) {
                 return Builder(
                   builder: (BuildContext context) {
                     return ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => DetailComic(
+                                      item: i,
+                                    )),
+                            (route) => false);
+                      },
                       style: ElevatedButton.styleFrom(
                         elevation: 0,
                         backgroundColor: Colors.white,
@@ -151,8 +148,8 @@ class _HomeComicState extends State<HomeComic> {
                         padding: const EdgeInsets.all(10),
                         child: ClipRRect(
                             borderRadius: BorderRadius.circular(20),
-                            child: Image.asset(
-                              i,
+                            child: Image.network(
+                              i.anhBia,
                               fit: BoxFit.cover,
                               width: size.width,
                             )),
@@ -164,7 +161,7 @@ class _HomeComicState extends State<HomeComic> {
             ), //Slider
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: listview.asMap().entries.map((entry) {
+              children: comicProvider.listTop5.asMap().entries.map((entry) {
                 return GestureDetector(
                   onTap: () => _controller.animateToPage(entry.key),
                   child: Container(
@@ -205,13 +202,15 @@ class _HomeComicState extends State<HomeComic> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    ...listview1.map(
+                    ...comicProvider.listTop5.map(
                       (e) => ElevatedButton(
                         onPressed: () {
                           Navigator.push(context,
                               MaterialPageRoute(builder: (context) {
                             // do something
-                            return const DetailComic();
+                            return DetailComic(
+                              item: e,
+                            );
                           }));
                         },
                         style: ElevatedButton.styleFrom(
@@ -231,8 +230,8 @@ class _HomeComicState extends State<HomeComic> {
                                 height: size.height / 9,
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(10),
-                                  child: Image.asset(
-                                    e,
+                                  child: Image.network(
+                                    e.anhBia,
                                     fit: BoxFit.cover,
                                   ),
                                 ),
@@ -240,7 +239,7 @@ class _HomeComicState extends State<HomeComic> {
                               Column(
                                 children: [
                                   Text(
-                                    "Evangelion",
+                                    e.tenTruyen,
                                     overflow: TextOverflow.clip,
                                     style: GoogleFonts.readexPro(
                                         fontWeight: FontWeight.bold,
@@ -248,7 +247,7 @@ class _HomeComicState extends State<HomeComic> {
                                         fontSize: 14),
                                   ),
                                   Text(
-                                    "From ",
+                                    e.tacGia,
                                     overflow: TextOverflow.clip,
                                     style: GoogleFonts.readexPro(
                                         color: Colors.grey, fontSize: 12),
@@ -284,18 +283,19 @@ class _HomeComicState extends State<HomeComic> {
               width: size.width,
               child: ListView(
                 children: [
-                  ...listview2.map((e) {
+                  ...comicProvider.list.map((e) {
                     return ElevatedButton(
                       onPressed: () {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
                           // do something
-                          return const DetailComic();
+                          return DetailComic(
+                            item: e,
+                          );
                         }));
                       },
                       style: ElevatedButton.styleFrom(
-                          elevation: 0,
-                          backgroundColor: Colors.white),
+                          elevation: 0, backgroundColor: Colors.white),
                       child: Padding(
                         padding: const EdgeInsets.only(bottom: 15),
                         child: Column(
@@ -305,8 +305,8 @@ class _HomeComicState extends State<HomeComic> {
                             ),
                             ClipRRect(
                                 borderRadius: BorderRadius.circular(20),
-                                child: Image.asset(
-                                  e.toString(),
+                                child: Image.network(
+                                  e.anhBia,
                                   fit: BoxFit.cover,
                                   width: size.width,
                                   height: 130,
@@ -320,12 +320,12 @@ class _HomeComicState extends State<HomeComic> {
                                 RichText(
                                   maxLines: 1,
                                   text: TextSpan(
-                                      text: "Evangelion",
+                                      text: e.tenTruyen,
                                       style: GoogleFonts.readexPro(
                                           fontWeight: FontWeight.bold,
                                           color: Colors.black,
                                           fontSize: 18.0),
-                                      children:const [
+                                      children: const [
                                         TextSpan(
                                             text: '',
                                             style: TextStyle(

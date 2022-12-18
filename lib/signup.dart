@@ -1,6 +1,8 @@
 import 'package:comic_app/login.dart';
+import 'package:comic_app/provider/user.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -8,6 +10,12 @@ class SignUpScreen extends StatefulWidget {
   @override
   State<SignUpScreen> createState() => _SignUpScreenState();
 }
+
+var tendn;
+var email;
+var soDienThoai;
+var password;
+var rePass;
 
 class _SignUpScreenState extends State<SignUpScreen> {
   final _formKey = GlobalKey<FormState>();
@@ -36,6 +44,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   Widget _signInForm(BuildContext context) {
+    var account = Provider.of<UserProvider>(context);
     return Padding(
       padding: const EdgeInsets.all(14.0),
       child: Form(
@@ -57,6 +66,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   if (value!.isEmpty) {
                     return "Vui long nhap ten tai khoan";
                   }
+                  tendn = value;
                   return null;
                 },
               ),
@@ -76,7 +86,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
                 onSaved: (String? value) {},
                 validator: (String? value) {
-                  if (value!.isEmpty) return "Vui long nhap email";
+                  if (value!.isEmpty)
+                    return "Vui long nhap email";
+                  else if (!account.iSignUp) {
+                    account.iSignUp = true;
+                    return "Email đã tồn tại, vui lòng nhập lại email!";
+                  } else
+                    email = value;
                   return null;
                 },
               ),
@@ -98,7 +114,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 validator: (String? value) {
                   if (value!.isEmpty) {
                     return "Vui long nhap so dien thoai";
-                  }
+                  } else
+                    soDienThoai = value;
                   return null;
                 },
               ),
@@ -121,7 +138,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   validator: (String? value) {
                     if (value!.isEmpty) {
                       return "Vui long nhap mat khau";
-                    }
+                    } else
+                      rePass = value;
                     return null;
                   }),
             ),
@@ -141,8 +159,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                   onSaved: (String? value) {},
                   validator: (String? value) {
-                    if (value!.isEmpty) {
+                    if (value!.isEmpty || value != rePass) {
                       return "Vui long nhap mat khau";
+                    } else {
+                      password = value;
                     }
                     return null;
                   }),
@@ -179,12 +199,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 onPressed: () {
                   setState(() {
                     if (_formKey.currentState!.validate()) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const LoginScreen(),
-                        ),
-                      );
+                      (() async {
+                        await account.signUpAccount(
+                            tendn, email, soDienThoai, password);
+                        setState(() {
+                          if (account.iSignUp) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const LoginScreen(),
+                              ),
+                            );
+                          }
+                        });
+                      })();
                     }
                   });
                 },

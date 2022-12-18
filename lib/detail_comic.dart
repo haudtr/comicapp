@@ -1,9 +1,12 @@
+import 'package:comic_app/models/comic.dart';
 import 'package:comic_app/reading_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class DetailComic extends StatefulWidget {
-  const DetailComic({super.key});
+  ComicModel item;
+
+  DetailComic({super.key, required this.item});
 
   @override
   State<DetailComic> createState() => _DetailComicState();
@@ -92,19 +95,18 @@ class _DetailComicState extends State<DetailComic> {
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
+                children: [
                   Text(
-                    "Yuji",
+                    widget.item.tacGia,
                     style: TextStyle(fontSize: 25),
                   ),
-                  Text("main character"),
+                  //Text("main character: ${widget.item.tacGia}"),
                 ],
               ),
               const SizedBox(
                 height: 5,
               ),
-              const Text(
-                  "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."),
+              Text(widget.item.moTa),
               const SizedBox(
                 height: 10,
               ),
@@ -341,7 +343,7 @@ class _DetailComicState extends State<DetailComic> {
   }
 
   Widget _buildCoverImage(BuildContext context) {
-    return Image.asset("assets/images/image 5.png");
+    return Image.network(widget.item.anhBia);
   }
 
   Widget _buildComicTitleAndFavoriteButton(BuildContext context) {
@@ -350,9 +352,9 @@ class _DetailComicState extends State<DetailComic> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const SizedBox(
+          SizedBox(
             child: Text(
-              "Jujutsu kaisen",
+              widget.item.tenTruyen,
               style: TextStyle(fontSize: 25),
             ),
           ),
