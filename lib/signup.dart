@@ -197,24 +197,26 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12))),
                 onPressed: () {
-                  setState(() {
-                    if (_formKey.currentState!.validate()) {
-                      (() async {
-                        await account.signUpAccount(
-                            tendn, email, soDienThoai, password);
-                        setState(() {
-                          if (account.iSignUp) {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const LoginScreen(),
-                              ),
-                            );
-                          }
-                        });
-                      })();
-                    }
-                  });
+                  if (_formKey.currentState!.validate()) {
+                    // setState(() {
+                    (() async {
+                      account.iSignUp = true;
+
+                      await account.signUpAccount(
+                          tendn, email, soDienThoai, password);
+                      // setState(() {
+                      if (account.iSignUp) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const LoginScreen(),
+                          ),
+                        );
+                      }
+                      // });
+                    })();
+                    // });
+                  }
                 },
                 child: const Text(
                   "Đăng ký",

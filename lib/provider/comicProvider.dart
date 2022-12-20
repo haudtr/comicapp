@@ -14,7 +14,6 @@ class ComicProvider extends ChangeNotifier {
     var jsonString = await client.get(Uri.parse(apiURL));
     var jsonObject = jsonDecode(jsonString.body);
     var comiclistObject = jsonObject as List;
-    print(comiclistObject);
     list = comiclistObject.map((e) {
       return ComicModel.fromJson(e);
     }).toList();
@@ -27,7 +26,6 @@ class ComicProvider extends ChangeNotifier {
     var jsonString = await client.get(Uri.parse(apiURL));
     var jsonObject = jsonDecode(jsonString.body);
     var comiclistObject = jsonObject as List;
-    print(comiclistObject);
     listTop5 = comiclistObject.map((e) {
       return ComicModel.fromJson(e);
     }).toList();
@@ -46,10 +44,10 @@ class ComicProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // void searchProduct(String input) {
-  //   list = list
-  //       .where((e) =>
-  //           e.title.toString().toLowerCase().contains(input.toLowerCase()))
-  //       .toList();
-  // }
+  void searchProduct(String input) {
+    list = list
+        .where((e) =>
+            e.tenTruyen.toString().toLowerCase().contains(input.toLowerCase()))
+        .toList();
+  }
 }

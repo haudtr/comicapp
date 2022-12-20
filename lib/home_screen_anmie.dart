@@ -1,4 +1,5 @@
 // import 'dart:html';
+import 'package:comic_app/models/user.dart';
 import 'package:provider/provider.dart';
 
 import 'package:carousel_slider/carousel_slider.dart';
@@ -8,12 +9,14 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:comic_app/constants/constant.dart' as constant;
 
 import 'detail_comic.dart';
 
 class HomeComic extends StatefulWidget {
-  const HomeComic({Key? key}) : super(key: key);
-
+  // UserModel user;
+  HomeComic({super.key});
+  // HomeComic({super.key, required this.user});
   @override
   State<HomeComic> createState() => _HomeComicState();
 }
@@ -87,7 +90,7 @@ class _HomeComicState extends State<HomeComic> {
                       onTap: () {},
                       child: Padding(
                         padding: const EdgeInsets.all(10.0),
-                        child: Image.asset("assets/images/img_10.png",
+                        child: Image.network(constant.user!.avatar,
                             fit: BoxFit.cover, height: size.height),
                       ),
                     ),

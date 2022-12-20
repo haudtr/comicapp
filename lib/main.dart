@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
         color: Colors.white,
       )),
       darkTheme: ThemeData.dark(),
-      home: const SignUpScreen(),
+      home: const LoginScreen(),
     );
   }
 }

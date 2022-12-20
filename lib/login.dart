@@ -1,7 +1,11 @@
 import 'package:comic_app/home_screen_anmie.dart';
+import 'package:comic_app/provider/user.dart';
 import 'package:comic_app/signup.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+var email, password;
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -41,6 +45,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget _buildLoginForm(BuildContext context) {
+    var account = Provider.of<UserProvider>(context);
     return Padding(
       padding: const EdgeInsets.all(14.0),
       child: Form(
@@ -60,6 +65,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 onSaved: (String? value) {},
                 validator: (String? value) {
                   if (value!.isEmpty) return "Vui long nhap email";
+                  email = value;
                   return null;
                 },
               ),
@@ -83,6 +89,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     if (value!.isEmpty) {
                       return "Vui long nhap mat khau";
                     }
+                    password = value;
                     return null;
                   }),
             ),
@@ -118,10 +125,17 @@ class _LoginScreenState extends State<LoginScreen> {
                 onPressed: () {
                   setState(() {
                     if (_formKey.currentState!.validate()) {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: ((context) => const HomeComic())));
+                      (() async {
+                        await account.loginAccount(email, password);
+                        if (account.iLogIn) {
+                          account.getUser(email);
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
+                            // do something
+                            return HomeComic();
+                          }));
+                        }
+                      })();
                     }
                   });
                 },
