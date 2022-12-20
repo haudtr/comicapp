@@ -1,7 +1,11 @@
 import 'package:comic_app/models/comic.dart';
+import 'package:comic_app/models/favorite.dart';
+import 'package:comic_app/provider/favoriteProvider.dart';
+import 'package:comic_app/provider/ratingProvider.dart';
 import 'package:comic_app/reading_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:provider/provider.dart';
 
 class DetailComic extends StatefulWidget {
   ComicModel item;
@@ -23,6 +27,7 @@ class _DetailComicState extends State<DetailComic> {
   late double xAlign;
   late Color loginColor;
   late Color signInColor;
+  bool iLoading = true;
 
   int selectedItem = 1;
 
@@ -36,6 +41,17 @@ class _DetailComicState extends State<DetailComic> {
 
   @override
   Widget build(BuildContext context) {
+    var favorite = Provider.of<FavoriteProvider>(context);
+    var ratingComic = Provider.of<RatingProvider>(context);
+    if (iLoading) {
+      (() async {
+        await favorite.getComicFavorite(widget.item.id);
+        await ratingComic.getComicRating(widget.item.id);
+        setState(() {
+          iLoading = false;
+        });
+      })();
+    }
     return Scaffold(
       appBar: AppBar(
         leading: const Padding(
@@ -65,7 +81,7 @@ class _DetailComicState extends State<DetailComic> {
             const SizedBox(
               height: 10,
             ),
-            _buildComicTitleAndFavoriteButton(context),
+            _buildComicTitleAndFavoriteButton(context, favorite),
             const SizedBox(
               height: 10,
             ),
@@ -75,7 +91,7 @@ class _DetailComicState extends State<DetailComic> {
             ),
             Expanded(
               child: selectedItem == 1
-                  ? _buildDescription(context)
+                  ? _buildDescription(context, ratingComic)
                   : _buildChapList(context),
             ),
           ],
@@ -84,7 +100,7 @@ class _DetailComicState extends State<DetailComic> {
     );
   }
 
-  Widget _buildDescription(BuildContext context) {
+  Widget _buildDescription(BuildContext context, RatingProvider ratingComic) {
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
       child: Padding(
@@ -124,7 +140,8 @@ class _DetailComicState extends State<DetailComic> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     RatingBar(
-                      initialRating: 4,
+                      initialRating:
+                          ratingComic.getRate(ratingComic.listRatingComic),
                       ignoreGestures: true,
                       itemSize: 35,
                       direction: Axis.horizontal,
@@ -154,13 +171,13 @@ class _DetailComicState extends State<DetailComic> {
                     ),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
+                      children: [
                         Text(
-                          "265",
+                          ratingComic.listRatingComic.length.toString(),
                           style: TextStyle(
                               fontSize: 18, fontWeight: FontWeight.bold),
                         ),
-                        Text("danh gia"),
+                        Text("Đánh giá"),
                       ],
                     ),
                   ],
@@ -169,83 +186,90 @@ class _DetailComicState extends State<DetailComic> {
               const SizedBox(
                 height: 15,
               ),
-              SizedBox(
-                width: MediaQuery.of(context).size.width,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SizedBox(
-                          child: Row(
-                            children: const [
-                              CircleAvatar(
-                                backgroundImage:
-                                    AssetImage("assets/images/image 5.png"),
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Text(
-                                "Nguyen Sane",
-                                style: TextStyle(fontSize: 16),
-                              ),
-                            ],
-                          ),
+              ...ratingComic.listRatingComic.map((e) {
+                return Container(
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                SizedBox(
+                                  child: Row(
+                                    children: [
+                                      CircleAvatar(
+                                        backgroundImage:
+                                            NetworkImage(e.avtDocGia),
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Text(
+                                        e.maDocGia,
+                                        style: TextStyle(fontSize: 16),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(
+                                  child: Text(e.ngayViet.split("T")[0]),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
-                        const SizedBox(
-                          child: Text("Oct 13,2017"),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(
-                height: 5,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      child: RatingBar(
-                        initialRating: 4,
-                        ignoreGestures: true,
-                        itemSize: 10,
-                        direction: Axis.horizontal,
-                        allowHalfRating: true,
-                        itemCount: 5,
-                        ratingWidget: RatingWidget(
-                          full: const Icon(
-                            Icons.star,
-                            color: Color.fromARGB(255, 255, 230, 0),
-                          ),
-                          half: const Icon(
-                            Icons.star_half,
-                            color: Color.fromARGB(255, 255, 230, 0),
-                          ),
-                          empty: const Icon(
-                            Icons.star_rate,
-                            color: Colors.black,
-                          ),
-                        ),
-                        itemPadding:
-                            const EdgeInsets.symmetric(horizontal: 4.0),
-                        onRatingUpdate: (rating) {
-                          // print(rating);
-                        },
                       ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(
-                child: Text(
-                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."),
-              )
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              child: RatingBar(
+                                initialRating: e.rate.toDouble(),
+                                ignoreGestures: true,
+                                itemSize: 10,
+                                direction: Axis.horizontal,
+                                allowHalfRating: true,
+                                itemCount: 5,
+                                ratingWidget: RatingWidget(
+                                  full: const Icon(
+                                    Icons.star,
+                                    color: Color.fromARGB(255, 255, 230, 0),
+                                  ),
+                                  half: const Icon(
+                                    Icons.star_half,
+                                    color: Color.fromARGB(255, 255, 230, 0),
+                                  ),
+                                  empty: const Icon(
+                                    Icons.star_rate,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                                itemPadding:
+                                    const EdgeInsets.symmetric(horizontal: 4.0),
+                                onRatingUpdate: (rating) {
+                                  // print(rating);
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        child: Text(e.noiDung),
+                      )
+                    ],
+                  ),
+                );
+              }).toList()
             ],
           ),
         ),
@@ -346,7 +370,8 @@ class _DetailComicState extends State<DetailComic> {
     return Image.network(widget.item.anhBia);
   }
 
-  Widget _buildComicTitleAndFavoriteButton(BuildContext context) {
+  Widget _buildComicTitleAndFavoriteButton(
+      BuildContext context, FavoriteProvider favorite) {
     return Container(
       padding: const EdgeInsets.only(left: 30, right: 30),
       child: Row(
@@ -368,12 +393,12 @@ class _DetailComicState extends State<DetailComic> {
               onPressed: () {},
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
+                children: [
                   Icon(Icons.favorite),
                   SizedBox(
                     width: 5,
                   ),
-                  Text("61"),
+                  Text(favorite.listFavoriteComic.length.toString()),
                 ],
               ))
         ],
@@ -426,7 +451,7 @@ class _DetailComicState extends State<DetailComic> {
                 color: Colors.transparent,
                 alignment: Alignment.center,
                 child: Text(
-                  'Mo ta',
+                  'Mô tả',
                   style: TextStyle(
                     color: loginColor,
                     fontWeight: FontWeight.bold,
@@ -453,7 +478,7 @@ class _DetailComicState extends State<DetailComic> {
                 color: Colors.transparent,
                 alignment: Alignment.center,
                 child: Text(
-                  'Danh sach chuong',
+                  'Danh sách chương',
                   style: TextStyle(
                     color: signInColor,
                     fontWeight: FontWeight.bold,

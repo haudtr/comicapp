@@ -2,6 +2,8 @@ import 'package:comic_app/detail_comic.dart';
 import 'package:comic_app/home_screen_anmie.dart';
 import 'package:comic_app/login.dart';
 import 'package:comic_app/provider/comicProvider.dart';
+import 'package:comic_app/provider/favoriteProvider.dart';
+import 'package:comic_app/provider/ratingProvider.dart';
 import 'package:comic_app/provider/user.dart';
 import 'package:comic_app/signup.dart';
 
@@ -14,6 +16,8 @@ void main() => runApp(
         providers: [
           ChangeNotifierProvider(create: (_) => ComicProvider()),
           ChangeNotifierProvider(create: (_) => UserProvider()),
+          ChangeNotifierProvider(create: (_) => RatingProvider()),
+          ChangeNotifierProvider(create: (_) => FavoriteProvider()),
         ],
         child: DevicePreview(
           enabled: true,
