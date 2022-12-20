@@ -6,8 +6,11 @@ import 'package:flutter/foundation.dart';
 
 class ComicProvider extends ChangeNotifier {
   List<ComicModel> list = [];
+  List<ComicModel> listSearch = [];
+
   List<ComicModel> listTop5 = [];
   List<ComicModel> comicID = [];
+
   Future<void> getList() async {
     String apiURL = "http://localhost:3000/api/v1/comic";
     var client = http.Client();
@@ -44,8 +47,8 @@ class ComicProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void searchProduct(String input) {
-    list = list
+  void searchComic(String input) {
+    listSearch = list
         .where((e) =>
             e.tenTruyen.toString().toLowerCase().contains(input.toLowerCase()))
         .toList();

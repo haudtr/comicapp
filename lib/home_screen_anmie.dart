@@ -34,6 +34,7 @@ class _HomeComicState extends State<HomeComic> {
       (() async {
         await comicProvider.getList();
         await comicProvider.getTopList();
+        comicProvider.searchComic("");
         setState(() {
           iLoading = false;
         });
@@ -80,6 +81,11 @@ class _HomeComicState extends State<HomeComic> {
                         borderRadius: BorderRadius.circular(25),
                       ),
                     ),
+                    onChanged: (value) {
+                      setState(() {
+                        comicProvider.searchComic(value);
+                      });
+                    },
                   ),
                 ),
                 Material(
@@ -286,7 +292,7 @@ class _HomeComicState extends State<HomeComic> {
               width: size.width,
               child: ListView(
                 children: [
-                  ...comicProvider.list.map((e) {
+                  ...comicProvider.listSearch.map((e) {
                     return ElevatedButton(
                       onPressed: () {
                         Navigator.push(context,
