@@ -19,4 +19,47 @@ class FavoriteProvider extends ChangeNotifier {
     }).toList();
     notifyListeners();
   }
+
+  Future<bool> like(String maTruyen, String tenTruyen, String maDocGia) async {
+    final response =
+        await http.post(Uri.parse('http://localhost:3000/api/v1/favorite/add'),
+            headers: <String, String>{
+              'Content-Type': 'application/json; charset=UTF-8',
+            },
+            body: jsonEncode(
+              <String, dynamic>{
+                "maTruyen": maTruyen,
+                "tenTruyen": tenTruyen,
+                "maDocGia": maDocGia
+              },
+            ));
+    if (response.statusCode == 201) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  Future<bool> unlike(String maTruyen, String maDocGia) async {
+    final response = await http.post(
+        Uri.parse('http://localhost:3000/api/v1/favorite/delete/unLike'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(
+          <String, dynamic>{"maTruyen": maTruyen, "maDocGia": maDocGia},
+        ));
+    if (response.statusCode == 201) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  bool checkFavorite(String maTruyen, String maDocGia) {
+    for (var item in listFavoriteComic) {
+      if (item.maDocGia == maTruyen && item.maDocGia == maDocGia) return true;
+    }
+    return false;
+  }
 }

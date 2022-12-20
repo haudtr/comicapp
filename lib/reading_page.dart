@@ -38,23 +38,186 @@ class _ReadingPageScreenState extends State<ReadingPageScreen> {
     signInColor = normalColor;
   }
 
+  bool chatSelected = false;
+  final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: [
-            _buildAppBar(context),
-            const SizedBox(
-              height: 5,
+      body: Stack(
+        children: [
+          SafeArea(
+            child: Column(
+              children: [
+                _buildAppBar(context),
+                const SizedBox(
+                  height: 5,
+                ),
+                _buildSelectedUIButton(context),
+                const SizedBox(
+                  height: 10,
+                ),
+                Expanded(
+                    child: selectedUI == 1
+                        ? _buildClassicUI(context)
+                        : _buildSlideUI(context)),
+              ],
             ),
-            _buildSelectedUIButton(context),
-            Expanded(
-                child: selectedUI == 1
-                    ? _buildClassicUI(context)
-                    : _buildSlideUI(context)),
-          ],
-        ),
+          ),
+          Positioned(
+            left: 0,
+            bottom: 0,
+            child: Padding(
+              padding: const EdgeInsets.only(
+                left: 14,
+                bottom: 16,
+              ),
+              child: AnimatedAlign(
+                curve: Curves.fastOutSlowIn,
+                alignment:
+                    chatSelected ? Alignment.topLeft : Alignment.bottomLeft,
+                duration: const Duration(seconds: 2),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Color.fromARGB(255, 24, 50, 71),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  width: chatSelected
+                      ? MediaQuery.of(context).size.width * (9 / 10)
+                      : 0,
+                  height: chatSelected
+                      ? MediaQuery.of(context).size.height * (7 / 10)
+                      : 0,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        decoration: const BoxDecoration(
+                            color: Colors.black,
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(20),
+                                topRight: Radius.circular(20))),
+                        width: double.infinity,
+                        child: const Padding(
+                          padding: EdgeInsets.all(10),
+                          child: Text(
+                            "Binh luan",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                                color: Colors.white),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Expanded(
+                        child: SingleChildScrollView(
+                          child: SizedBox(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                _testComment(context),
+                                const SizedBox(
+                                  height: 5,
+                                ),
+                                _testDayComment(context),
+                                _testComment(context),
+                                const SizedBox(
+                                  height: 5,
+                                ),
+                                _testDayComment(context),
+                                _testComment(context),
+                                const SizedBox(
+                                  height: 5,
+                                ),
+                                _testDayComment(context),
+                                _testComment(context),
+                                const SizedBox(
+                                  height: 5,
+                                ),
+                                _testDayComment(context),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      Form(
+                        key: _formKey,
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Container(
+                                height: 45,
+                                decoration: BoxDecoration(
+                                  color: const Color.fromARGB(255, 49, 49, 49),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                padding:
+                                    const EdgeInsets.only(left: 20, right: 20),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    const Text(
+                                      "Huy",
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 16),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          top: 10, bottom: 10),
+                                      child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: Colors.white,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                          ),
+                                        ),
+                                        onPressed: () {
+                                          if (_formKey.currentState!.validate())
+                                            ;
+                                        },
+                                        child: const Text(
+                                          "GUI",
+                                          style: TextStyle(color: Colors.black),
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 20),
+                              child: TextFormField(
+                                initialValue: "Nhap binh luan",
+                                style: TextStyle(color: Colors.white),
+                                // decoration: const InputDecoration(
+                                //   contentPadding: EdgeInsets.only(left: 14),
+                                //   hintText: "Nhap binh luan",
+                                // ),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Nhap binh luan';
+                                  }
+                                  return null;
+                                },
+                              ),
+                            )
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          )
+        ],
       ),
       bottomNavigationBar: _buildChangeChapterBar(context),
     );
@@ -177,11 +340,16 @@ class _ReadingPageScreenState extends State<ReadingPageScreen> {
         ),
         Expanded(
           child: SingleChildScrollView(
-            child: Column(
-              children: [
-                Image.asset("assets/images/image 3.png"),
-                Image.asset("assets/images/image 2.png"),
-              ],
+            child: Padding(
+              padding: const EdgeInsets.only(left: 14, right: 14),
+              child: SizedBox(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,
+                child: Image.asset(
+                  "assets/images/image 3.png",
+                  fit: BoxFit.fill,
+                ),
+              ),
             ),
           ),
         ),
@@ -199,37 +367,130 @@ class _ReadingPageScreenState extends State<ReadingPageScreen> {
   }
 
   Widget _buildChangeChapterBar(BuildContext context) {
-    return SingleChildScrollView(
-      child: Container(
-        width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        IconButton(
+          onPressed: () {
+            setState(() {
+              chatSelected = !chatSelected;
+            });
+          },
+          icon: const Icon(Icons.chat),
         ),
-        child: Center(
-          child: DropdownButtonHideUnderline(
-            child: DropdownButton(
-              alignment: Alignment.topCenter,
-              borderRadius: BorderRadius.circular(10),
-              iconSize: 0.0,
-              icon: const Visibility(
-                visible: false,
-                child: Icon(Icons.arrow_downward),
+        SizedBox(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              IconButton(
+                  iconSize: 30,
+                  padding: EdgeInsets.zero,
+                  constraints: const BoxConstraints(),
+                  onPressed: () {},
+                  icon: const Icon(Icons.navigate_before)),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 5),
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: MediaQuery.of(context).size.width / 2,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.grey),
+                        child: Center(
+                          child: DropdownButtonHideUnderline(
+                            child: DropdownButton(
+                              isExpanded: true,
+                              alignment: Alignment.topCenter,
+                              borderRadius: BorderRadius.circular(10),
+                              iconSize: 0.0,
+                              icon: const Visibility(
+                                visible: false,
+                                child: Icon(Icons.arrow_downward),
+                              ),
+                              value: dropdownvalue,
+                              items: items.map((String items) {
+                                return DropdownMenuItem(
+                                  value: items,
+                                  child: Center(child: Text(items)),
+                                );
+                              }).toList(),
+                              onChanged: (String? newValue) {
+                                setState(() {
+                                  dropdownvalue = newValue!;
+                                });
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
-              value: dropdownvalue,
-              items: items.map((String items) {
-                return DropdownMenuItem(
-                  value: items,
-                  child: Text(items),
-                );
-              }).toList(),
-              onChanged: (String? newValue) {
-                setState(() {
-                  dropdownvalue = newValue!;
-                });
-              },
-            ),
+              IconButton(
+                  iconSize: 30,
+                  padding: EdgeInsets.zero,
+                  constraints: const BoxConstraints(),
+                  onPressed: () {},
+                  icon: const Icon(Icons.navigate_next)),
+            ],
           ),
         ),
+        Container(
+          decoration: const BoxDecoration(
+            borderRadius: BorderRadius.only(bottomRight: Radius.circular(14)),
+            color: Colors.grey,
+          ),
+          child: IconButton(
+              highlightColor: Colors.transparent,
+              hoverColor: Colors.transparent,
+              splashColor: Colors.transparent,
+              style: IconButton.styleFrom(backgroundColor: Colors.blue),
+              onPressed: () {},
+              icon: const Icon(Icons.arrow_upward)),
+        ),
+      ],
+    );
+  }
+
+  Widget _testComment(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 20, right: 20),
+      child: Container(
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(14),
+          color: const Color.fromARGB(255, 1, 26, 46),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: const [
+            Text(
+              "Huy",
+              style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18),
+            ),
+            Text(
+              "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              style: TextStyle(color: Colors.white),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _testDayComment(BuildContext context) {
+    return const Padding(
+      padding: EdgeInsets.only(left: 24),
+      child: Text(
+        "4 ngay truoc",
+        style: TextStyle(color: Colors.white),
       ),
     );
   }

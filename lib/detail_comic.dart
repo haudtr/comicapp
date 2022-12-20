@@ -6,6 +6,7 @@ import 'package:comic_app/reading_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
+import 'package:comic_app/constants/constant.dart' as constant;
 
 class DetailComic extends StatefulWidget {
   ComicModel item;
@@ -39,6 +40,8 @@ class _DetailComicState extends State<DetailComic> {
     signInColor = normalColor;
   }
 
+  bool isFavorite = false;
+  int favoriteCount = 0;
   @override
   Widget build(BuildContext context) {
     var favorite = Provider.of<FavoriteProvider>(context);
@@ -48,6 +51,9 @@ class _DetailComicState extends State<DetailComic> {
         await favorite.getComicFavorite(widget.item.id);
         await ratingComic.getComicRating(widget.item.id);
         setState(() {
+          isFavorite =
+              favorite.checkFavorite(widget.item.id, constant.user!.id);
+          favoriteCount = favorite.listFavoriteComic.length;
           iLoading = false;
         });
       })();
@@ -205,7 +211,7 @@ class _DetailComicState extends State<DetailComic> {
                                         backgroundImage:
                                             NetworkImage(e.avtDocGia),
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         width: 10,
                                       ),
                                       Text(
@@ -385,20 +391,34 @@ class _DetailComicState extends State<DetailComic> {
           ),
           ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color.fromARGB(255, 146, 198, 224),
+                backgroundColor: isFavorite
+                    ? Color.fromARGB(255, 146, 198, 224)
+                    : Color.fromARGB(255, 254, 115, 107),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(25),
                 ),
               ),
-              onPressed: () {},
+              onPressed: () {
+                if (isFavorite) {
+                  favorite.unlike(widget.item.id, constant.user!.id);
+                  favoriteCount--;
+                  isFavorite = false;
+                } else {
+                  favorite.like(
+                      widget.item.id, widget.item.tenTruyen, constant.user!.id);
+                  favoriteCount++;
+                  isFavorite = true;
+                }
+                setState(() {});
+              },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Icon(Icons.favorite),
-                  SizedBox(
+                  const Icon(Icons.favorite),
+                  const SizedBox(
                     width: 5,
                   ),
-                  Text(favorite.listFavoriteComic.length.toString()),
+                  Text(favoriteCount.toString()),
                 ],
               ))
         ],
