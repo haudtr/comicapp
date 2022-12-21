@@ -20,7 +20,7 @@ void main() => runApp(
           ChangeNotifierProvider(create: (_) => FavoriteProvider()),
         ],
         child: DevicePreview(
-          enabled: true,
+          enabled: false,
           builder: (context) => const MyApp(), // Wrap your app
         ),
       ),
@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: true,
+      debugShowCheckedModeBanner: false,
       useInheritedMediaQuery: true,
       locale: DevicePreview.locale(context),
       builder: DevicePreview.appBuilder,
