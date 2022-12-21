@@ -294,8 +294,7 @@ class _HomeComicState extends State<HomeComic> {
                         }));
                       },
                       style: ElevatedButton.styleFrom(
-                          elevation: 0,
-                          backgroundColor: Colors.white),
+                          elevation: 0, backgroundColor: Colors.white),
                       child: Padding(
                         padding: const EdgeInsets.only(bottom: 15),
                         child: Column(
@@ -325,7 +324,7 @@ class _HomeComicState extends State<HomeComic> {
                                           fontWeight: FontWeight.bold,
                                           color: Colors.black,
                                           fontSize: 18.0),
-                                      children:const [
+                                      children: const [
                                         TextSpan(
                                             text: '',
                                             style: TextStyle(
