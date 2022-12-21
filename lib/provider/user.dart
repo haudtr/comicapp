@@ -23,7 +23,7 @@ class UserProvider extends ChangeNotifier {
   // }
 
   Future<void> getUser(String email) async {
-    String apiURL = "http://localhost:3000/api/v1/account/user/${email}";
+    String apiURL = "http://192.168.100.7:3000/api/v1/account/user/${email}";
     var client = http.Client();
     var jsonString = await client.get(Uri.parse(apiURL));
     var jsonObject = jsonDecode(jsonString.body);
@@ -42,21 +42,21 @@ class UserProvider extends ChangeNotifier {
 
   Future<bool> signUpAccount(
       String tenUser, String email, String phone, String password) async {
-    final response =
-        await http.post(Uri.parse('http://localhost:3000/api/v1/account/add'),
-            headers: <String, String>{
-              'Content-Type': 'application/json; charset=UTF-8',
-            },
-            body: jsonEncode(
-              <String, dynamic>{
-                "tenUser": tenUser,
-                "email": email,
-                "password": password,
-                "phoneNumber": phone,
-                "avatar":
-                    "https://haycafe.vn/wp-content/uploads/2021/11/Anh-avatar-dep-chat-lam-hinh-dai-dien.jpg"
-              },
-            ));
+    final response = await http.post(
+        Uri.parse('http://192.168.100.7:3000/api/v1/account/add'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(
+          <String, dynamic>{
+            "tenUser": tenUser,
+            "email": email,
+            "password": password,
+            "phoneNumber": phone,
+            "avatar":
+                "https://haycafe.vn/wp-content/uploads/2021/11/Anh-avatar-dep-chat-lam-hinh-dai-dien.jpg"
+          },
+        ));
     if (response.statusCode == 201) {
       iSignUp = true;
       return true;
@@ -67,14 +67,14 @@ class UserProvider extends ChangeNotifier {
   }
 
   Future<bool> loginAccount(String email, String password) async {
-    final response =
-        await http.post(Uri.parse('http://localhost:3000/api/v1/account/login'),
-            headers: <String, String>{
-              'Content-Type': 'application/json; charset=UTF-8',
-            },
-            body: jsonEncode(
-              <String, dynamic>{"email": email, "password": password},
-            ));
+    final response = await http.post(
+        Uri.parse('http://192.168.100.7:3000/api/v1/account/login'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(
+          <String, dynamic>{"email": email, "password": password},
+        ));
     if (response.statusCode == 200) {
       iLogIn = true;
       return true;

@@ -12,7 +12,7 @@ class ComicProvider extends ChangeNotifier {
   List<ComicModel> comicID = [];
 
   Future<void> getList() async {
-    String apiURL = "http://localhost:3000/api/v1/comic";
+    String apiURL = "http://192.168.100.7:3000/api/v1/comic";
     var client = http.Client();
     var jsonString = await client.get(Uri.parse(apiURL));
     var jsonObject = jsonDecode(jsonString.body);
@@ -24,7 +24,7 @@ class ComicProvider extends ChangeNotifier {
   }
 
   Future<void> getTopList() async {
-    String apiURL = "http://localhost:3000/api/v1/comic/top";
+    String apiURL = "http://192.168.100.7:3000/api/v1/comic/top";
     var client = http.Client();
     var jsonString = await client.get(Uri.parse(apiURL));
     var jsonObject = jsonDecode(jsonString.body);
@@ -36,7 +36,7 @@ class ComicProvider extends ChangeNotifier {
   }
 
   Future<void> getComicID(String ID) async {
-    String apiURL = "http://localhost:3000/api/v1/comic/${ID}";
+    String apiURL = "http://192.168.100.7:3000/api/v1/comic/${ID}";
     var client = http.Client();
     var jsonString = await client.get(Uri.parse(apiURL));
     var jsonObject = jsonDecode(jsonString.body);
