@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
 class ReadingPageScreen extends StatefulWidget {
@@ -64,159 +66,7 @@ class _ReadingPageScreenState extends State<ReadingPageScreen> {
               ],
             ),
           ),
-          Positioned(
-            left: 0,
-            bottom: 0,
-            child: Padding(
-              padding: const EdgeInsets.only(
-                left: 14,
-                bottom: 16,
-              ),
-              child: AnimatedAlign(
-                curve: Curves.fastOutSlowIn,
-                alignment:
-                    chatSelected ? Alignment.topLeft : Alignment.bottomLeft,
-                duration: const Duration(seconds: 2),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Color.fromARGB(255, 24, 50, 71),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  width: chatSelected
-                      ? MediaQuery.of(context).size.width * (9 / 10)
-                      : 0,
-                  height: chatSelected
-                      ? MediaQuery.of(context).size.height * (7 / 10)
-                      : 0,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        decoration: const BoxDecoration(
-                            color: Colors.black,
-                            borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(20),
-                                topRight: Radius.circular(20))),
-                        width: double.infinity,
-                        child: const Padding(
-                          padding: EdgeInsets.all(10),
-                          child: Text(
-                            "Binh luan",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20,
-                                color: Colors.white),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Expanded(
-                        child: SingleChildScrollView(
-                          child: SizedBox(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                _testComment(context),
-                                const SizedBox(
-                                  height: 5,
-                                ),
-                                _testDayComment(context),
-                                _testComment(context),
-                                const SizedBox(
-                                  height: 5,
-                                ),
-                                _testDayComment(context),
-                                _testComment(context),
-                                const SizedBox(
-                                  height: 5,
-                                ),
-                                _testDayComment(context),
-                                _testComment(context),
-                                const SizedBox(
-                                  height: 5,
-                                ),
-                                _testDayComment(context),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      Form(
-                        key: _formKey,
-                        child: Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(10.0),
-                              child: Container(
-                                height: 45,
-                                decoration: BoxDecoration(
-                                  color: const Color.fromARGB(255, 49, 49, 49),
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                padding:
-                                    const EdgeInsets.only(left: 20, right: 20),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    const Text(
-                                      "Huy",
-                                      style: TextStyle(
-                                          color: Colors.white, fontSize: 16),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          top: 10, bottom: 10),
-                                      child: ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor: Colors.white,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                          ),
-                                        ),
-                                        onPressed: () {
-                                          if (_formKey.currentState!.validate())
-                                            ;
-                                        },
-                                        child: const Text(
-                                          "GUI",
-                                          style: TextStyle(color: Colors.black),
-                                        ),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 20),
-                              child: TextFormField(
-                                initialValue: "Nhap binh luan",
-                                style: TextStyle(color: Colors.white),
-                                // decoration: const InputDecoration(
-                                //   contentPadding: EdgeInsets.only(left: 14),
-                                //   hintText: "Nhap binh luan",
-                                // ),
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Nhap binh luan';
-                                  }
-                                  return null;
-                                },
-                              ),
-                            )
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          )
+          _commentPopUp(context),
         ],
       ),
       bottomNavigationBar: _buildChangeChapterBar(context),
@@ -345,9 +195,17 @@ class _ReadingPageScreenState extends State<ReadingPageScreen> {
               child: SizedBox(
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height,
-                child: Image.asset(
-                  "assets/images/image 3.png",
-                  fit: BoxFit.fill,
+                child: Column(
+                  children: [
+                    Image.asset(
+                      "assets/images/image 3.png",
+                      fit: BoxFit.fill,
+                    ),
+                    Image.asset(
+                      "assets/images/image 3.png",
+                      fit: BoxFit.fill,
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -363,7 +221,45 @@ class _ReadingPageScreenState extends State<ReadingPageScreen> {
   }
 
   Widget _buildSlideUI(BuildContext context) {
-    return const SizedBox();
+    return Column(
+      children: [
+        const Text(
+          "Chuong 3: Ac mong",
+          style: TextStyle(fontSize: 22),
+        ),
+        const SizedBox(
+          height: 15,
+        ),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 14, right: 14),
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+              child: ListView(
+                scrollDirection: Axis.horizontal,
+                children: [
+                  Image.asset(
+                    "assets/images/image 3.png",
+                    fit: BoxFit.fill,
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Image.asset(
+                    "assets/images/image 3.png",
+                    fit: BoxFit.fill,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(
+          height: 10,
+        )
+      ],
+    );
   }
 
   Widget _buildChangeChapterBar(BuildContext context) {
@@ -439,19 +335,13 @@ class _ReadingPageScreenState extends State<ReadingPageScreen> {
             ],
           ),
         ),
-        Container(
-          decoration: const BoxDecoration(
-            borderRadius: BorderRadius.only(bottomRight: Radius.circular(14)),
-            color: Colors.grey,
-          ),
-          child: IconButton(
-              highlightColor: Colors.transparent,
-              hoverColor: Colors.transparent,
-              splashColor: Colors.transparent,
-              style: IconButton.styleFrom(backgroundColor: Colors.blue),
-              onPressed: () {},
-              icon: const Icon(Icons.arrow_upward)),
-        ),
+        IconButton(
+            highlightColor: Colors.transparent,
+            hoverColor: Colors.transparent,
+            splashColor: Colors.transparent,
+            // style: IconButton.styleFrom(backgroundColor: Colors.blue),
+            onPressed: () {},
+            icon: const Icon(Icons.arrow_upward)),
       ],
     );
   }
@@ -463,7 +353,7 @@ class _ReadingPageScreenState extends State<ReadingPageScreen> {
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(14),
-          color: const Color.fromARGB(255, 1, 26, 46),
+          color: const Color.fromARGB(255, 33, 44, 51),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -491,6 +381,175 @@ class _ReadingPageScreenState extends State<ReadingPageScreen> {
       child: Text(
         "4 ngay truoc",
         style: TextStyle(color: Colors.white),
+      ),
+    );
+  }
+
+  Widget _commentPopUp(BuildContext context) {
+    return Positioned(
+      left: 0,
+      bottom: 0,
+      child: Padding(
+        padding: const EdgeInsets.only(
+          left: 14,
+          bottom: 16,
+        ),
+        child: AnimatedAlign(
+          curve: Curves.fastOutSlowIn,
+          alignment: chatSelected ? Alignment.topLeft : Alignment.bottomLeft,
+          duration: const Duration(seconds: 2),
+          child: Container(
+            decoration: BoxDecoration(
+              color: const Color.fromARGB(255, 54, 69, 79),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            width:
+                chatSelected ? MediaQuery.of(context).size.width * (9 / 10) : 0,
+            height: chatSelected
+                ? MediaQuery.of(context).size.height * (7 / 10)
+                : 0,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  decoration: const BoxDecoration(
+                      color: Colors.black,
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(20),
+                          topRight: Radius.circular(20))),
+                  width: double.infinity,
+                  child: const Padding(
+                    padding: EdgeInsets.all(10),
+                    child: Text(
+                      "Binh luan",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                          color: Colors.white),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: SizedBox(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _testComment(context),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          _testDayComment(context),
+                          _testComment(context),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          _testDayComment(context),
+                          _testComment(context),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          _testDayComment(context),
+                          _testComment(context),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          _testDayComment(context),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                Form(
+                  key: _formKey,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left: 10, right: 10),
+                          child: Container(
+                            height: 45,
+                            decoration: const BoxDecoration(
+                              color: Color.fromARGB(255, 54, 52, 55),
+                              borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(10),
+                                  topRight: Radius.circular(10)),
+                            ),
+                            padding: const EdgeInsets.only(left: 20, right: 20),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Text(
+                                  "Huy",
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 16),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: 10, bottom: 10),
+                                  child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.white,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                    ),
+                                    onPressed: () {
+                                      if (_formKey.currentState!.validate()) ;
+                                    },
+                                    child: const Text(
+                                      "GUI",
+                                      style: TextStyle(color: Colors.black),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 10, right: 10),
+                          child: Container(
+                            padding: const EdgeInsets.only(left: 10, right: 10),
+                            decoration: const BoxDecoration(
+                              borderRadius: BorderRadius.only(
+                                  bottomLeft: Radius.circular(10),
+                                  bottomRight: Radius.circular(10)),
+                              color: Color.fromARGB(255, 42, 69, 87),
+                            ),
+                            child: TextFormField(
+                              initialValue: "Nhap binh luan...",
+                              style: const TextStyle(color: Colors.white),
+                              // decoration: const InputDecoration(
+                              //   contentPadding: EdgeInsets.only(left: 14),
+                              //   hintText: "Nhap binh luan",
+                              // ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Nhap binh luan';
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        )
+                      ],
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
