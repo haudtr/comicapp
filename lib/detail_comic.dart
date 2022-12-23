@@ -1,5 +1,6 @@
 import 'package:comic_app/models/comic.dart';
 import 'package:comic_app/models/favorite.dart';
+import 'package:comic_app/provider/chapterProvider.dart';
 import 'package:comic_app/provider/favoriteProvider.dart';
 import 'package:comic_app/provider/ratingProvider.dart';
 import 'package:comic_app/reading_page.dart';
@@ -7,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:comic_app/constants/constant.dart' as constant;
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class DetailComic extends StatefulWidget {
   ComicModel item;
@@ -29,9 +31,9 @@ class _DetailComicState extends State<DetailComic> {
   late Color loginColor;
   late Color signInColor;
   bool iLoading = true;
-
+  bool isFavorite = false;
   int selectedItem = 1;
-
+  int favoriteCount = 0;
   @override
   void initState() {
     super.initState();
@@ -40,16 +42,17 @@ class _DetailComicState extends State<DetailComic> {
     signInColor = normalColor;
   }
 
-  bool isFavorite = false;
-  int favoriteCount = 0;
+  // bool isFavorite = false;
   @override
   Widget build(BuildContext context) {
     var favorite = Provider.of<FavoriteProvider>(context);
     var ratingComic = Provider.of<RatingProvider>(context);
+    var chapterOfComic = Provider.of<ChapterProvider>(context);
     if (iLoading) {
       (() async {
         await favorite.getComicFavorite(widget.item.id);
         await ratingComic.getComicRating(widget.item.id);
+        await chapterOfComic.getChapterOfComic(widget.item.id);
         setState(() {
           isFavorite =
               favorite.checkFavorite(widget.item.id, constant.user!.id);
@@ -80,29 +83,35 @@ class _DetailComicState extends State<DetailComic> {
         ],
         elevation: 0,
       ),
-      body: SafeArea(
-        child: Column(
-          children: [
-            _buildCoverImage(context),
-            const SizedBox(
-              height: 10,
+      body: iLoading
+          ? Center(
+              child: LoadingAnimationWidget.dotsTriangle(
+              color: Colors.blueGrey,
+              size: 50,
+            ))
+          : SafeArea(
+              child: Column(
+                children: [
+                  _buildCoverImage(context),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  _buildComicTitleAndFavoriteButton(context, favorite),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  _buildOptionButton(context),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Expanded(
+                    child: selectedItem == 1
+                        ? _buildDescription(context, ratingComic)
+                        : _buildChapList(context, chapterOfComic),
+                  ),
+                ],
+              ),
             ),
-            _buildComicTitleAndFavoriteButton(context, favorite),
-            const SizedBox(
-              height: 10,
-            ),
-            _buildOptionButton(context),
-            const SizedBox(
-              height: 10,
-            ),
-            Expanded(
-              child: selectedItem == 1
-                  ? _buildDescription(context, ratingComic)
-                  : _buildChapList(context),
-            ),
-          ],
-        ),
-      ),
     );
   }
 
@@ -222,7 +231,8 @@ class _DetailComicState extends State<DetailComic> {
                                   ),
                                 ),
                                 SizedBox(
-                                  child: Text(e.ngayViet.split("T")[0]),
+                                  child:
+                                      Text(e.ngayViet.toString().split("T")[0]),
                                 ),
                               ],
                             ),
@@ -283,86 +293,90 @@ class _DetailComicState extends State<DetailComic> {
     );
   }
 
-  Widget _buildChapList(BuildContext context) {
+  Widget _buildChapList(BuildContext context, ChapterProvider chapterOfComic) {
     return Padding(
       padding: const EdgeInsets.only(left: 30, right: 30),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            "88 chuong",
+          Text(
+            chapterOfComic.listChapterOfComic.length.toString() + " chapter",
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
           Expanded(
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  for (int i = 0; i < 88; i++)
-                    Column(
-                      children: [
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const ReadingPageScreen(),
+                  ...chapterOfComic.listChapterOfComic
+                      .map(((e) => Column(
+                            children: [
+                              const SizedBox(
+                                height: 5,
                               ),
-                            );
-                          },
-                          child: SizedBox(
-                            width: MediaQuery.of(context).size.width,
-                            height: 50,
-                            child: Row(
-                              children: [
-                                const Text(
-                                  "chuong 1",
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              ReadingPageScreen(item: e)));
+                                },
+                                child: SizedBox(
+                                  width: MediaQuery.of(context).size.width,
+                                  height: 50,
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        "Chương " + e.tapSo.toString(),
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
+                                      Expanded(
+                                        child: Container(
+                                          width:
+                                              MediaQuery.of(context).size.width,
+                                          padding:
+                                              const EdgeInsets.only(left: 10),
+                                          decoration: BoxDecoration(
+                                              color: Colors.grey,
+                                              borderRadius:
+                                                  BorderRadius.circular(15)),
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                e.ten,
+                                                style: TextStyle(
+                                                    fontSize: 18,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                              Text(
+                                                "1 ngay truoc - 12 view",
+                                                style: TextStyle(
+                                                    fontSize: 18,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                                const SizedBox(
-                                  width: 10,
-                                ),
-                                Expanded(
-                                  child: Container(
-                                    width: MediaQuery.of(context).size.width,
-                                    padding: const EdgeInsets.only(left: 10),
-                                    decoration: BoxDecoration(
-                                        color: Colors.grey,
-                                        borderRadius:
-                                            BorderRadius.circular(15)),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: const [
-                                        Text(
-                                          "giao dich",
-                                          style: TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                        Text(
-                                          "1 ngay truoc - 12 view",
-                                          style: TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    )
+                              ),
+                            ],
+                          )))
+                      .toList()
                 ],
               ),
             ),
@@ -392,8 +406,8 @@ class _DetailComicState extends State<DetailComic> {
           ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: isFavorite
-                    ? Color.fromARGB(255, 146, 198, 224)
-                    : Color.fromARGB(255, 254, 115, 107),
+                    ? Color.fromARGB(255, 254, 115, 107)
+                    : Color.fromARGB(255, 146, 198, 224),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(25),
                 ),
@@ -401,15 +415,19 @@ class _DetailComicState extends State<DetailComic> {
               onPressed: () {
                 if (isFavorite) {
                   favorite.unlike(widget.item.id, constant.user!.id);
-                  favoriteCount--;
-                  isFavorite = false;
+                  setState(() {
+                    favoriteCount--;
+                    isFavorite = false;
+                  });
                 } else {
                   favorite.like(
                       widget.item.id, widget.item.tenTruyen, constant.user!.id);
-                  favoriteCount++;
-                  isFavorite = true;
+
+                  setState(() {
+                    favoriteCount++;
+                    isFavorite = true;
+                  });
                 }
-                setState(() {});
               },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

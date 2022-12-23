@@ -4,12 +4,13 @@ import 'package:comic_app/models/favorite.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
 import 'package:comic_app/constants/constant.dart' as constant;
+import '../constants/localhost.dart' as l;
 
 class FavoriteProvider extends ChangeNotifier {
   List<FavoriteModel> listFavoriteComic = [];
 
   Future<void> getComicFavorite(String id) async {
-    String apiURL = "http://192.168.100.7:3000/api/v1/favorite/comic/${id}";
+    String apiURL = "http://${l.localhost}:3000/api/v1/favorite/comic/$id";
     var client = http.Client();
     var jsonString = await client.get(Uri.parse(apiURL));
     var jsonObject = jsonDecode(jsonString.body);
@@ -22,7 +23,7 @@ class FavoriteProvider extends ChangeNotifier {
 
   Future<bool> like(String maTruyen, String tenTruyen, String maDocGia) async {
     final response = await http.post(
-        Uri.parse('http://192.168.100.7:3000/api/v1/favorite/add'),
+        Uri.parse('http://${l.localhost}:3000/api/v1/favorite/add'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -42,7 +43,7 @@ class FavoriteProvider extends ChangeNotifier {
 
   Future<bool> unlike(String maTruyen, String maDocGia) async {
     final response = await http.post(
-        Uri.parse('http://192.168.100.7:3000/api/v1/favorite/delete/unLike'),
+        Uri.parse('http://${l.localhost}:3000/api/v1/favorite/delete/unLike'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -58,7 +59,7 @@ class FavoriteProvider extends ChangeNotifier {
 
   bool checkFavorite(String maTruyen, String maDocGia) {
     for (var item in listFavoriteComic) {
-      if (item.maDocGia == maTruyen && item.maDocGia == maDocGia) return true;
+      if (item.maTruyen == maTruyen && item.maDocGia == maDocGia) return true;
     }
     return false;
   }

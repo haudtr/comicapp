@@ -5,7 +5,7 @@ class RatingModel {
   String maTruyen;
   int rate;
   String noiDung;
-  String ngayViet;
+  DateTime ngayViet;
 
   RatingModel(
       {required this.id,
@@ -24,6 +24,6 @@ class RatingModel {
         maTruyen: obj['maTruyen'],
         rate: obj['rate'],
         noiDung: obj['noiDung'],
-        ngayViet: obj['ngayViet']);
+        ngayViet: DateTime.parse(obj['ngayViet']));
   }
 }

@@ -6,6 +6,7 @@ import 'package:comic_app/signup.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
 import 'package:comic_app/constants/constant.dart' as constant;
+import '../constants/localhost.dart' as l;
 
 class UserProvider extends ChangeNotifier {
   List<UserModel> list = [];
@@ -23,7 +24,7 @@ class UserProvider extends ChangeNotifier {
   // }
 
   Future<void> getUser(String email) async {
-    String apiURL = "http://192.168.100.7:3000/api/v1/account/user/${email}";
+    String apiURL = "http://${l.localhost}:3000/api/v1/account/user/${email}";
     var client = http.Client();
     var jsonString = await client.get(Uri.parse(apiURL));
     var jsonObject = jsonDecode(jsonString.body);
@@ -43,7 +44,7 @@ class UserProvider extends ChangeNotifier {
   Future<bool> signUpAccount(
       String tenUser, String email, String phone, String password) async {
     final response = await http.post(
-        Uri.parse('http://192.168.100.7:3000/api/v1/account/add'),
+        Uri.parse('http://${l.localhost}:3000/api/v1/account/add'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -68,7 +69,7 @@ class UserProvider extends ChangeNotifier {
 
   Future<bool> loginAccount(String email, String password) async {
     final response = await http.post(
-        Uri.parse('http://192.168.100.7:3000/api/v1/account/login'),
+        Uri.parse('http://${l.localhost}:3000/api/v1/account/login'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
