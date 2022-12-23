@@ -211,7 +211,7 @@ class _HomeComicState extends State<HomeComic> {
                           Navigator.push(context,
                               MaterialPageRoute(builder: (context) {
                             // do something
-                            return const DetailComic();
+                            return const DetailComicScreen();
                           }));
                         },
                         style: ElevatedButton.styleFrom(
@@ -290,7 +290,7 @@ class _HomeComicState extends State<HomeComic> {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
                           // do something
-                          return const DetailComic();
+                          return const DetailComicScreen();
                         }));
                       },
                       style: ElevatedButton.styleFrom(

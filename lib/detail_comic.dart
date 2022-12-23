@@ -2,11 +2,11 @@ import 'package:comic_app/reading_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
-class DetailComic extends StatefulWidget {
-  const DetailComic({super.key});
+class DetailComicScreen extends StatefulWidget {
+  const DetailComicScreen({super.key});
 
   @override
-  State<DetailComic> createState() => _DetailComicState();
+  State<DetailComicScreen> createState() => _DetailComicScreenState();
 }
 
 const double width = 300.0;
@@ -16,7 +16,7 @@ const double signInAlign = 1;
 const Color selectedColor = Colors.white;
 const Color normalColor = Colors.black54;
 
-class _DetailComicState extends State<DetailComic> {
+class _DetailComicScreenState extends State<DetailComicScreen> {
   late double xAlign;
   late Color loginColor;
   late Color signInColor;
@@ -358,7 +358,7 @@ class _DetailComicState extends State<DetailComic> {
           ),
           ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color.fromARGB(255, 146, 198, 224),
+                backgroundColor: const Color.fromARGB(255, 64, 70, 99),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(25),
                 ),

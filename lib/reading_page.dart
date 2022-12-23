@@ -1,6 +1,5 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class ReadingPageScreen extends StatefulWidget {
   const ReadingPageScreen({super.key});
@@ -32,15 +31,39 @@ class _ReadingPageScreenState extends State<ReadingPageScreen> {
     'Item 4',
     'Item 5',
   ];
+
   @override
   void initState() {
     super.initState();
     xAlign = loginAlign;
     loginColor = selectedColor;
     signInColor = normalColor;
+    scrollController.addListener(() {
+      //scroll listener
+      double showoffset =
+          10.0; //Back to top botton will show on scroll offset 10.0
+
+      if (scrollController.offset > showoffset && selectedUI == 1) {
+        showbtn = true;
+        setState(() {
+          //update state
+        });
+      } else {
+        showbtn = false;
+        setState(() {
+          //update state
+        });
+      }
+    });
   }
 
+  ScrollController scrollController = ScrollController();
+  bool showbtn = false;
+
   bool chatSelected = false;
+
+  bool ratingSelected = false;
+
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -63,10 +86,53 @@ class _ReadingPageScreenState extends State<ReadingPageScreen> {
                     child: selectedUI == 1
                         ? _buildClassicUI(context)
                         : _buildSlideUI(context)),
+                // AnimatedOpacity(
+                //   duration: Duration(milliseconds: 1000), //show/hide animation
+                //   opacity: showbtn
+                //       ? 1.0
+                //       : 0.0, //set obacity to 1 on visible, or hide
+                //   child: FloatingActionButton(
+                //     onPressed: () {
+                //       scrollController.animateTo(
+                //           //go to top of scroll
+                //           0, //scroll offset to go
+                //           duration:
+                //               Duration(milliseconds: 500), //duration of scroll
+                //           curve: Curves.fastOutSlowIn //scroll type
+                //           );
+                //     },
+                //     child: Icon(Icons.arrow_upward),
+                //     backgroundColor: Colors.redAccent,
+                //   ),
+                // ),
               ],
             ),
           ),
           _commentPopUp(context),
+          _ratingPopUp(context),
+          Positioned(
+              bottom: 0,
+              right: 0,
+              child: AnimatedOpacity(
+                duration:
+                    const Duration(milliseconds: 1000), //show/hide animation
+                opacity:
+                    showbtn ? 1.0 : 0.0, //set obacity to 1 on visible, or hide
+                child: FloatingActionButton(
+                  mini: true,
+                  onPressed: () {
+                    scrollController.animateTo(
+                        //go to top of scroll
+                        0, //scroll offset to go
+                        duration: const Duration(
+                            milliseconds: 500), //duration of scroll
+                        curve: Curves.fastOutSlowIn //scroll type
+                        );
+                  },
+                  backgroundColor: Colors.redAccent,
+                  child: const Icon(Icons.arrow_upward),
+                ),
+              )),
         ],
       ),
       bottomNavigationBar: _buildChangeChapterBar(context),
@@ -190,6 +256,7 @@ class _ReadingPageScreenState extends State<ReadingPageScreen> {
         ),
         Expanded(
           child: SingleChildScrollView(
+            controller: scrollController,
             child: Padding(
               padding: const EdgeInsets.only(left: 14, right: 14),
               child: SizedBox(
@@ -200,6 +267,9 @@ class _ReadingPageScreenState extends State<ReadingPageScreen> {
                     Image.asset(
                       "assets/images/image 3.png",
                       fit: BoxFit.fill,
+                    ),
+                    const SizedBox(
+                      height: 10,
                     ),
                     Image.asset(
                       "assets/images/image 3.png",
@@ -340,13 +410,17 @@ class _ReadingPageScreenState extends State<ReadingPageScreen> {
             hoverColor: Colors.transparent,
             splashColor: Colors.transparent,
             // style: IconButton.styleFrom(backgroundColor: Colors.blue),
-            onPressed: () {},
-            icon: const Icon(Icons.arrow_upward)),
+            onPressed: () {
+              setState(() {
+                ratingSelected = !ratingSelected;
+              });
+            },
+            icon: const Icon(Icons.rate_review)),
       ],
     );
   }
 
-  Widget _testComment(BuildContext context) {
+  Widget _testComment(BuildContext context, String comment) {
     return Padding(
       padding: const EdgeInsets.only(left: 20, right: 20),
       child: Container(
@@ -357,8 +431,8 @@ class _ReadingPageScreenState extends State<ReadingPageScreen> {
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
-            Text(
+          children: [
+            const Text(
               "Huy",
               style: TextStyle(
                   color: Colors.white,
@@ -366,7 +440,7 @@ class _ReadingPageScreenState extends State<ReadingPageScreen> {
                   fontSize: 18),
             ),
             Text(
-              "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              comment,
               style: TextStyle(color: Colors.white),
             )
           ],
@@ -437,23 +511,27 @@ class _ReadingPageScreenState extends State<ReadingPageScreen> {
                     child: SizedBox(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          _testComment(context),
+                          _testComment(context, "aaaa"),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          _testDayComment(
+                            context,
+                          ),
+                          _testComment(context, "aaaa"),
                           const SizedBox(
                             height: 5,
                           ),
                           _testDayComment(context),
-                          _testComment(context),
+                          _testComment(context, "aasdasd"),
                           const SizedBox(
                             height: 5,
                           ),
                           _testDayComment(context),
-                          _testComment(context),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          _testDayComment(context),
-                          _testComment(context),
+                          _testComment(context,
+                              "aaaaaaaaaaaadasdasdasdawdaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
                           const SizedBox(
                             height: 5,
                           ),
@@ -524,12 +602,13 @@ class _ReadingPageScreenState extends State<ReadingPageScreen> {
                               color: Color.fromARGB(255, 42, 69, 87),
                             ),
                             child: TextFormField(
-                              initialValue: "Nhap binh luan...",
-                              style: const TextStyle(color: Colors.white),
-                              // decoration: const InputDecoration(
-                              //   contentPadding: EdgeInsets.only(left: 14),
-                              //   hintText: "Nhap binh luan",
-                              // ),
+                              style: const TextStyle(
+                                color: Colors.white,
+                              ),
+                              decoration: const InputDecoration(
+                                  contentPadding: EdgeInsets.only(left: 14),
+                                  hintText: "Nhap binh luan",
+                                  hintStyle: TextStyle(color: Colors.white)),
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
                                   return 'Nhap binh luan';
@@ -546,6 +625,123 @@ class _ReadingPageScreenState extends State<ReadingPageScreen> {
                     ),
                   ),
                 )
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _ratingPopUp(BuildContext context) {
+    return Positioned(
+      right: 0,
+      bottom: 0,
+      child: Padding(
+        padding: const EdgeInsets.only(
+          left: 14,
+          bottom: 16,
+        ),
+        child: AnimatedAlign(
+          curve: Curves.fastOutSlowIn,
+          alignment: ratingSelected ? Alignment.topLeft : Alignment.bottomLeft,
+          duration: const Duration(seconds: 2),
+          child: Container(
+            decoration: BoxDecoration(
+              // color: const Color.fromARGB(255, 54, 69, 79),
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(20),
+            ),
+            width: ratingSelected
+                ? MediaQuery.of(context).size.width * (9 / 10)
+                : 0,
+            height: ratingSelected
+                ? MediaQuery.of(context).size.height * (4 / 10)
+                : 0,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  decoration: const BoxDecoration(
+                      color: Color.fromARGB(255, 54, 52, 55),
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(20),
+                          topRight: Radius.circular(20))),
+                  width: double.infinity,
+                  child: const Padding(
+                    padding: EdgeInsets.all(10),
+                    child: Text(
+                      "Rating",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                          color: Colors.white),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 14, right: 14),
+                  child: Image.asset(
+                    "assets/images/img_3.png",
+                    fit: BoxFit.fill,
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                const Text(
+                  "Jujutsu kaisen",
+                  style: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                RatingBar(
+                  initialRating: 4,
+                  // ignoreGestures: true,
+                  itemSize: 35,
+                  direction: Axis.horizontal,
+                  allowHalfRating: true,
+                  itemCount: 5,
+                  ratingWidget: RatingWidget(
+                    full: const Icon(
+                      Icons.star,
+                      color: Colors.grey,
+                    ),
+                    half: const Icon(
+                      Icons.star_half,
+                      color: Colors.grey,
+                    ),
+                    empty: const Icon(
+                      Icons.star_border,
+                      color: Colors.grey,
+                    ),
+                  ),
+                  itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+                  onRatingUpdate: (rating) {
+                    // print(rating);
+                  },
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                ElevatedButton(
+                    style:
+                        ElevatedButton.styleFrom(backgroundColor: Colors.grey),
+                    onPressed: () {},
+                    child: const Text(
+                      "Rate",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 16,
+                      ),
+                    ))
               ],
             ),
           ),
