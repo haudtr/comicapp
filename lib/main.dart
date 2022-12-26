@@ -1,37 +1,37 @@
-
-import 'package:comic_app/detail_comic.dart';
-import 'package:comic_app/home_screen_anmie.dart';
-import 'package:comic_app/login.dart';
-import 'package:comic_app/signup.dart';
+import 'package:animated_theme_switcher/animated_theme_switcher.dart';
+import 'package:comic_app/page/edit_profile.dart';
+import 'package:comic_app/page/profile_page.dart';
+import 'package:comic_app/themes.dart';
+import 'package:comic_app/utils/user_preferences.dart';
 import 'package:flutter/material.dart';
-import 'package:device_preview/device_preview.dart';
+import 'package:flutter/services.dart';
 
+Future main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
 
-
-void main() => runApp(
-      DevicePreview(
-        enabled: true,
-        builder: (context) => const MyApp(), // Wrap your app
-      ),
-    );
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  static final String title = 'User Profile';
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: true,
-      useInheritedMediaQuery: true,
-      locale: DevicePreview.locale(context),
-      builder: DevicePreview.appBuilder,
-      theme: ThemeData(
-          appBarTheme: const AppBarTheme(
-            color:Colors.white,
-          )),
-      darkTheme: ThemeData.dark(),
+    final user = UserPreferences.myUser;
 
-      home: const HomeComic(),
+    return ThemeProvider(
+      initTheme: user.isDarkMode ? MyThemes.darkTheme : MyThemes.lightTheme,
+      child: Builder(
+        builder: (context) => MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: title,
+          home: ProfilePage(),
+        ),
+      ),
     );
   }
 }
