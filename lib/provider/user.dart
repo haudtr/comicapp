@@ -11,7 +11,7 @@ import '../constants/localhost.dart' as l;
 class UserProvider extends ChangeNotifier {
   List<UserModel> list = [];
   bool iSignUp = true;
-  bool iLogIn = false;
+  bool iLogIn = true;
 
   // Future<void> getAccount(String ID) async {
   //   String apiURL = "http://localhost:3000/api/v1/account/${ID}";
@@ -80,6 +80,7 @@ class UserProvider extends ChangeNotifier {
       iLogIn = true;
       return true;
     } else {
+      iLogIn = false;
       return false;
     }
   }

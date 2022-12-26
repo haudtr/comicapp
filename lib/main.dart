@@ -1,6 +1,7 @@
 import 'package:comic_app/detail_comic.dart';
 import 'package:comic_app/home_screen_anmie.dart';
 import 'package:comic_app/login.dart';
+import 'package:comic_app/login_screen/login_screen.dart';
 import 'package:comic_app/provider/chapterProvider.dart';
 import 'package:comic_app/provider/comicProvider.dart';
 import 'package:comic_app/provider/commentProvider.dart';
@@ -45,7 +46,7 @@ class MyApp extends StatelessWidget {
         color: Colors.white,
       )),
       darkTheme: ThemeData.dark(),
-      home: const LoginScreen(),
+      home: LoginScreen_v2(),
     );
   }
 }
