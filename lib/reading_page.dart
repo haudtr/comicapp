@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:comic_app/constants/constant.dart' as constant;
 import 'package:provider/provider.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:google_fonts/google_fonts.dart';
+
 import 'package:intl/intl.dart';
 
 class ReadingPageScreen extends StatefulWidget {
@@ -23,6 +25,7 @@ const Color selectedColor = Colors.white;
 const Color normalColor = Colors.black54;
 
 class _ReadingPageScreenState extends State<ReadingPageScreen> {
+  ScrollController scrollController = ScrollController();
   final commentController = TextEditingController();
   late double xAlign;
   late Color loginColor;
@@ -30,26 +33,41 @@ class _ReadingPageScreenState extends State<ReadingPageScreen> {
   int selectedUI = 1;
   // Initial Selected Value
   String dropdownvalue = 'Item 1';
+  bool showbtn = false;
 
   // List of items in our dropdown menu
-  var items = [
-    'Item 1',
-    'Item 2',
-    'Item 3',
-    'Item 4',
-    'Item 5',
-  ];
+  // var items = [
+  //   'Item 1',
+  //   'Item 2',
+  //   'Item 3',
+  //   'Item 4',
+  //   'Item 5',
+  // ];
   @override
-  void initState() {
-    super.initState();
-    xAlign = loginAlign;
-    loginColor = selectedColor;
-    signInColor = normalColor;
-  }
-
   bool iLoading = true;
   bool chatSelected = false;
   final _formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    scrollController.addListener(() {
+      if (scrollController.offset > 100) {
+        showbtn = true;
+        setState(() {
+          //update state
+        });
+      } else {
+        showbtn = false;
+        setState(() {
+          //update state
+        });
+      }
+    });
+    xAlign = loginAlign;
+    loginColor = selectedColor;
+    signInColor = normalColor;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -277,7 +295,7 @@ class _ReadingPageScreenState extends State<ReadingPageScreen> {
           ),
           Text(
             widget.item.tenTruyen,
-            style: TextStyle(fontSize: 20),
+            style: GoogleFonts.readexPro(color: Colors.black, fontSize: 20.0),
           ),
           IconButton(onPressed: () {}, icon: const Icon(Icons.more_horiz))
         ],
@@ -287,8 +305,8 @@ class _ReadingPageScreenState extends State<ReadingPageScreen> {
 
   Widget _buildSelectedUIButton(BuildContext context) {
     return Container(
-      width: width,
-      height: height,
+      width: width * 0.8,
+      height: height * 0.8,
       decoration: const BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.all(
@@ -301,10 +319,10 @@ class _ReadingPageScreenState extends State<ReadingPageScreen> {
             alignment: Alignment(xAlign, 0),
             duration: const Duration(milliseconds: 300),
             child: Container(
-              width: width * 0.5,
-              height: height,
+              width: width * 0.4,
+              height: height * 0.8,
               decoration: const BoxDecoration(
-                color: Colors.grey,
+                color: Color.fromARGB(255, 119, 160, 184),
                 borderRadius: BorderRadius.all(
                   Radius.circular(50.0),
                 ),
@@ -324,16 +342,15 @@ class _ReadingPageScreenState extends State<ReadingPageScreen> {
             child: Align(
               alignment: const Alignment(-1, 0),
               child: Container(
-                width: width * 0.5,
+                width: width * 0.4,
                 color: Colors.transparent,
                 alignment: Alignment.center,
                 child: Text(
                   'Classic UI',
-                  style: TextStyle(
-                    color: loginColor,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                  ),
+                  style: GoogleFonts.readexPro(
+                      fontWeight: FontWeight.bold,
+                      color: loginColor,
+                      fontSize: 13.0),
                 ),
               ),
             ),
@@ -351,16 +368,15 @@ class _ReadingPageScreenState extends State<ReadingPageScreen> {
             child: Align(
               alignment: const Alignment(1, 0),
               child: Container(
-                width: width * 0.5,
+                width: width * 0.4,
                 color: Colors.transparent,
                 alignment: Alignment.center,
                 child: Text(
                   'Slide UI',
-                  style: TextStyle(
-                    color: signInColor,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                  ),
+                  style: GoogleFonts.readexPro(
+                      fontWeight: FontWeight.bold,
+                      color: signInColor,
+                      fontSize: 13.0),
                 ),
               ),
             ),
@@ -373,29 +389,35 @@ class _ReadingPageScreenState extends State<ReadingPageScreen> {
   Widget _buildClassicUI(BuildContext context) {
     return Column(
       children: [
-        Text(
-          "Chương " + widget.item.tapSo.toString() + ": " + widget.item.ten,
-          style: TextStyle(fontSize: 22),
-        ),
-        const SizedBox(
-          height: 15,
-        ),
         Expanded(
           child: SingleChildScrollView(
+            controller: scrollController,
             child: Column(children: [
+              Text(
+                "Chapter " +
+                    widget.item.tapSo.toString() +
+                    ": " +
+                    widget.item.ten,
+                style: GoogleFonts.readexPro(
+                    color: Colors.blueGrey.shade800, fontSize: 18.0),
+              ),
+              const SizedBox(
+                height: 15,
+              ),
               ...widget.item.noiDung.map((e) => Padding(
-                    padding: const EdgeInsets.only(left: 14, right: 14),
+                    padding:
+                        const EdgeInsets.only(left: 14, right: 14, bottom: 10),
                     child: SizedBox(
                       width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height,
+                      // height: MediaQuery.of(context).size.height,
                       child: Image.network(
                         e.anh,
-                        fit: BoxFit.fill,
+                        // fit: BoxFit.fill,
                       ),
                     ),
                   )),
               const SizedBox(
-                height: 10,
+                height: 15,
               ),
             ]),
           ),
@@ -411,92 +433,134 @@ class _ReadingPageScreenState extends State<ReadingPageScreen> {
   }
 
   Widget _buildChangeChapterBar(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        IconButton(
-          onPressed: () {
-            setState(() {
-              chatSelected = !chatSelected;
-            });
-          },
-          icon: const Icon(Icons.chat),
-        ),
-        SizedBox(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              IconButton(
-                  iconSize: 30,
-                  padding: EdgeInsets.zero,
-                  constraints: const BoxConstraints(),
-                  onPressed: () {},
-                  icon: const Icon(Icons.navigate_before)),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 5),
-                child: SingleChildScrollView(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width / 2,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.grey),
-                        child: Center(
-                          child: DropdownButtonHideUnderline(
-                            child: DropdownButton(
-                              isExpanded: true,
-                              alignment: Alignment.topCenter,
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.055,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Container(
+            width: width * 0.28,
+            color: Color.fromARGB(255, 79, 153, 209),
+            child: IconButton(
+              onPressed: () {
+                setState(() {
+                  chatSelected = !chatSelected;
+                });
+              },
+              icon: const Icon(
+                Icons.chat_bubble,
+                color: Colors.white54,
+              ),
+            ),
+          ),
+          SizedBox(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  margin: EdgeInsets.only(right: 4),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    color: Color.fromARGB(255, 158, 158, 158),
+                  ),
+                  child: IconButton(
+                      iconSize: 30,
+                      padding: EdgeInsets.zero,
+                      constraints: const BoxConstraints(),
+                      onPressed: () {},
+                      icon: const Icon(
+                        Icons.navigate_before,
+                        size: 18,
+                      )),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          height: MediaQuery.of(context).size.height * 0.04,
+                          width: MediaQuery.of(context).size.width / 2.2,
+                          decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
-                              iconSize: 0.0,
-                              icon: const Visibility(
-                                visible: false,
-                                child: Icon(Icons.arrow_downward),
-                              ),
-                              value: dropdownvalue,
-                              items: items.map((String items) {
-                                return DropdownMenuItem(
-                                  value: items,
-                                  child: Center(child: Text(items)),
-                                );
-                              }).toList(),
-                              onChanged: (String? newValue) {
-                                setState(() {
-                                  dropdownvalue = newValue!;
-                                });
-                              },
-                            ),
-                          ),
+                              color: const Color.fromARGB(255, 158, 158, 158)),
+                          child: Center(
+                              child: Text(
+                            "Chapter " + widget.item.tapSo.toString(),
+                            style: GoogleFonts.readexPro(
+                                color: Colors.blueGrey.shade800,
+                                fontSize: 16.0),
+                          )),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              IconButton(
-                  iconSize: 30,
-                  padding: EdgeInsets.zero,
-                  constraints: const BoxConstraints(),
-                  onPressed: () {},
-                  icon: const Icon(Icons.navigate_next)),
-            ],
+                Container(
+                  margin: const EdgeInsets.only(left: 4),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    color: const Color.fromARGB(255, 158, 158, 158),
+                  ),
+                  child: IconButton(
+                      iconSize: 30,
+                      padding: EdgeInsets.zero,
+                      constraints: const BoxConstraints(),
+                      onPressed: () {},
+                      icon: const Icon(
+                        Icons.navigate_next,
+                        size: 18,
+                      )),
+                ),
+              ],
+            ),
           ),
-        ),
-        Container(
-          decoration: const BoxDecoration(
-            borderRadius: BorderRadius.only(bottomRight: Radius.circular(14)),
-            color: Colors.grey,
-          ),
-          child: IconButton(
-              highlightColor: Colors.transparent,
-              hoverColor: Colors.transparent,
-              splashColor: Colors.transparent,
-              style: IconButton.styleFrom(backgroundColor: Colors.blue),
-              onPressed: () {},
-              icon: const Icon(Icons.arrow_upward)),
-        ),
-      ],
+          !showbtn
+              ? Container(
+                  width: width * 0.28,
+                  decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.only(
+                          bottomRight: Radius.circular(14)),
+                      color: Colors.grey),
+                  child: IconButton(
+                      highlightColor: Colors.transparent,
+                      hoverColor: Colors.transparent,
+                      splashColor: Colors.transparent,
+                      style: IconButton.styleFrom(backgroundColor: Colors.blue),
+                      onPressed: () {},
+                      icon: const Icon(Icons.arrow_upward)),
+                )
+              : Container(
+                  width: width * 0.28,
+                  decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.only(
+                          bottomRight: Radius.circular(14)),
+                      color: Color.fromARGB(255, 79, 153, 209)),
+                  child: IconButton(
+                      highlightColor: Colors.transparent,
+                      hoverColor: Colors.transparent,
+                      splashColor: Colors.transparent,
+                      style: IconButton.styleFrom(backgroundColor: Colors.blue),
+                      onPressed: () {
+                        scrollController.animateTo(
+                            //go to top of scroll
+                            0, //scroll offset to go
+                            duration: Duration(
+                                milliseconds: 500), //duration of scroll
+                            curve: Curves.fastOutSlowIn //scroll type
+                            );
+                      },
+                      icon: const Icon(
+                        Icons.arrow_upward,
+                        color: Colors.black54,
+                      )),
+                ),
+        ],
+      ),
     );
   }
 
