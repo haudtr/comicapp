@@ -1,7 +1,10 @@
 import 'package:comic_app/detail_comic.dart';
 import 'package:comic_app/home_screen_anmie.dart';
 import 'package:comic_app/login.dart';
+import 'package:comic_app/login_screen/login_screen.dart';
+import 'package:comic_app/provider/chapterProvider.dart';
 import 'package:comic_app/provider/comicProvider.dart';
+import 'package:comic_app/provider/commentProvider.dart';
 import 'package:comic_app/provider/favoriteProvider.dart';
 import 'package:comic_app/provider/ratingProvider.dart';
 import 'package:comic_app/provider/user.dart';
@@ -18,6 +21,8 @@ void main() => runApp(
           ChangeNotifierProvider(create: (_) => UserProvider()),
           ChangeNotifierProvider(create: (_) => RatingProvider()),
           ChangeNotifierProvider(create: (_) => FavoriteProvider()),
+          ChangeNotifierProvider(create: (_) => ChapterProvider()),
+          ChangeNotifierProvider(create: (_) => CommentProvider()),
         ],
         child: DevicePreview(
           enabled: false,
@@ -41,7 +46,7 @@ class MyApp extends StatelessWidget {
         color: Colors.white,
       )),
       darkTheme: ThemeData.dark(),
-      home: const LoginScreen(),
+      home: LoginScreen_v2(),
     );
   }
 }

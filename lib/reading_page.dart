@@ -1,7 +1,15 @@
+import 'package:comic_app/models/chapter.dart';
+import 'package:comic_app/provider/commentProvider.dart';
 import 'package:flutter/material.dart';
+import 'package:comic_app/constants/constant.dart' as constant;
+import 'package:provider/provider.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:intl/intl.dart';
 
 class ReadingPageScreen extends StatefulWidget {
-  const ReadingPageScreen({super.key});
+  ChapterModel item;
+
+  ReadingPageScreen({super.key, required this.item});
 
   @override
   State<ReadingPageScreen> createState() => _ReadingPageScreenState();
@@ -15,6 +23,7 @@ const Color selectedColor = Colors.white;
 const Color normalColor = Colors.black54;
 
 class _ReadingPageScreenState extends State<ReadingPageScreen> {
+  final commentController = TextEditingController();
   late double xAlign;
   late Color loginColor;
   late Color signInColor;
@@ -38,11 +47,22 @@ class _ReadingPageScreenState extends State<ReadingPageScreen> {
     signInColor = normalColor;
   }
 
+  bool iLoading = true;
   bool chatSelected = false;
   final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
+    var commentProvider = Provider.of<CommentProvider>(context);
+    var cmt;
+    if (iLoading) {
+      (() async {
+        await commentProvider.getCommentComic(widget.item.id);
+        setState(() {
+          iLoading = false;
+        });
+      })();
+    }
     return Scaffold(
       body: Stack(
         children: [
@@ -101,7 +121,7 @@ class _ReadingPageScreenState extends State<ReadingPageScreen> {
                         child: const Padding(
                           padding: EdgeInsets.all(10),
                           child: Text(
-                            "Binh luan",
+                            "Bình luận",
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 20,
@@ -115,31 +135,41 @@ class _ReadingPageScreenState extends State<ReadingPageScreen> {
                       Expanded(
                         child: SingleChildScrollView(
                           child: SizedBox(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                _testComment(context),
-                                const SizedBox(
-                                  height: 5,
-                                ),
-                                _testDayComment(context),
-                                _testComment(context),
-                                const SizedBox(
-                                  height: 5,
-                                ),
-                                _testDayComment(context),
-                                _testComment(context),
-                                const SizedBox(
-                                  height: 5,
-                                ),
-                                _testDayComment(context),
-                                _testComment(context),
-                                const SizedBox(
-                                  height: 5,
-                                ),
-                                _testDayComment(context),
-                              ],
-                            ),
+                            child: iLoading
+                                ? Center(
+                                    child: LoadingAnimationWidget.dotsTriangle(
+                                    color: Colors.blueGrey,
+                                    size: 50,
+                                  ))
+                                : Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      ...commentProvider.listComicComment.map(
+                                          (e) => _testComment(
+                                              context,
+                                              e.tenDocGia,
+                                              e.noiDung,
+                                              e.ngayBinhLuan))
+
+                                      // _testComment(context),
+                                      // const SizedBox(
+                                      //   height: 5,
+                                      // ),
+                                      // _testDayComment(context),
+                                      // _testComment(context),
+                                      // const SizedBox(
+                                      //   height: 5,
+                                      // ),
+                                      // _testDayComment(context),
+                                      // _testComment(context),
+                                      // const SizedBox(
+                                      //   height: 5,
+                                      // ),
+                                      // _testDayComment(context),
+                                    ],
+                                  ),
                           ),
                         ),
                       ),
@@ -161,8 +191,8 @@ class _ReadingPageScreenState extends State<ReadingPageScreen> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    const Text(
-                                      "Huy",
+                                    Text(
+                                      constant.user!.tenUser,
                                       style: TextStyle(
                                           color: Colors.white, fontSize: 16),
                                     ),
@@ -178,11 +208,23 @@ class _ReadingPageScreenState extends State<ReadingPageScreen> {
                                           ),
                                         ),
                                         onPressed: () {
-                                          if (_formKey.currentState!.validate())
-                                            ;
+                                          if (_formKey.currentState!
+                                              .validate()) {
+                                            (() async {
+                                              await commentProvider
+                                                  .commentChapter(
+                                                      constant.user!.id,
+                                                      constant.user!.tenUser,
+                                                      widget.item.id,
+                                                      commentController.text);
+                                              commentProvider.getCommentComic(
+                                                  widget.item.id);
+                                            })();
+                                            commentController.clear();
+                                          }
                                         },
                                         child: const Text(
-                                          "GUI",
+                                          "Gửi",
                                           style: TextStyle(color: Colors.black),
                                         ),
                                       ),
@@ -193,19 +235,18 @@ class _ReadingPageScreenState extends State<ReadingPageScreen> {
                             ),
                             Padding(
                               padding: const EdgeInsets.only(left: 20),
-                              child: TextFormField(
-                                initialValue: "Nhap binh luan",
+                              child: TextField(
                                 style: TextStyle(color: Colors.white),
-                                // decoration: const InputDecoration(
-                                //   contentPadding: EdgeInsets.only(left: 14),
-                                //   hintText: "Nhap binh luan",
-                                // ),
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Nhap binh luan';
-                                  }
-                                  return null;
-                                },
+                                controller: commentController,
+                                decoration: const InputDecoration(
+                                    hintStyle: TextStyle(fontSize: 17),
+                                    hintText: 'Nhập bình luận...',
+                                    border: InputBorder.none,
+                                    contentPadding: EdgeInsets.only(
+                                        left: 10,
+                                        top: 5,
+                                        right: 10,
+                                        bottom: 15)),
                               ),
                             )
                           ],
@@ -228,13 +269,14 @@ class _ReadingPageScreenState extends State<ReadingPageScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          IconButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              icon: const Icon(Icons.arrow_back)),
-          const Text(
-            "Jujutsu Kaisen",
+          BackButton(
+            color: Colors.black,
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+          Text(
+            widget.item.tenTruyen,
             style: TextStyle(fontSize: 20),
           ),
           IconButton(onPressed: () {}, icon: const Icon(Icons.more_horiz))
@@ -331,8 +373,8 @@ class _ReadingPageScreenState extends State<ReadingPageScreen> {
   Widget _buildClassicUI(BuildContext context) {
     return Column(
       children: [
-        const Text(
-          "Chuong 3: Ac mong",
+        Text(
+          "Chương " + widget.item.tapSo.toString() + ": " + widget.item.ten,
           style: TextStyle(fontSize: 22),
         ),
         const SizedBox(
@@ -340,22 +382,24 @@ class _ReadingPageScreenState extends State<ReadingPageScreen> {
         ),
         Expanded(
           child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.only(left: 14, right: 14),
-              child: SizedBox(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height,
-                child: Image.asset(
-                  "assets/images/image 3.png",
-                  fit: BoxFit.fill,
-                ),
+            child: Column(children: [
+              ...widget.item.noiDung.map((e) => Padding(
+                    padding: const EdgeInsets.only(left: 14, right: 14),
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height,
+                      child: Image.network(
+                        e.anh,
+                        fit: BoxFit.fill,
+                      ),
+                    ),
+                  )),
+              const SizedBox(
+                height: 10,
               ),
-            ),
+            ]),
           ),
-        ),
-        const SizedBox(
-          height: 10,
-        ),
+        )
 
         // DropdownMenuItem(child: child)
       ],
@@ -456,42 +500,92 @@ class _ReadingPageScreenState extends State<ReadingPageScreen> {
     );
   }
 
-  Widget _testComment(BuildContext context) {
+  Widget _testComment(
+      BuildContext context, String tenUser, String noiDung, DateTime date) {
     return Padding(
       padding: const EdgeInsets.only(left: 20, right: 20),
-      child: Container(
-        padding: const EdgeInsets.all(10),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(14),
-          color: const Color.fromARGB(255, 1, 26, 46),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
-            Text(
-              "Huy",
-              style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(14),
+              color: const Color.fromARGB(255, 1, 26, 46),
             ),
-            Text(
-              "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-              style: TextStyle(color: Colors.white),
-            )
-          ],
-        ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  tenUser,
+                  style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18),
+                ),
+                Text(
+                  noiDung,
+                  style: const TextStyle(color: Colors.white),
+                )
+              ],
+            ),
+          ),
+          buildDateFormat(date),
+          const SizedBox(
+            height: 5,
+          )
+        ],
       ),
     );
   }
 
-  Widget _testDayComment(BuildContext context) {
-    return const Padding(
-      padding: EdgeInsets.only(left: 24),
-      child: Text(
-        "4 ngay truoc",
-        style: TextStyle(color: Colors.white),
-      ),
+  // Widget _testDayComment(BuildContext context) {
+  //   return const Padding(
+  //     padding: EdgeInsets.only(left: 24),
+  //     child: Text(
+  //       "4 ngay truoc",
+  //       style: TextStyle(color: Colors.white),
+  //     ),
+  //   );
+  // }
+  Widget buildDateFormat(DateTime createDate) {
+    return Text(
+      // 86400
+      daysBetween(createDate, DateTime.now()) < 60
+          ?
+          //Nếu dưới 60 giây
+          "${daysBetween(createDate, DateTime.now())} seconds ago"
+          :
+          // Trên 60 giây, đổi sang phút
+          (daysBetween(createDate, DateTime.now()) / 60).round() < 60
+              ?
+              //Dưới 60 phút
+              "${(daysBetween(createDate, DateTime.now()) / 60).round()} minutes ago"
+              :
+              //Trên 60 phút, đổi sang giờ
+              (daysBetween(createDate, DateTime.now()) / (60 * 60)).round() < 24
+                  ?
+                  //Dưới 24 giờ
+                  "${(daysBetween(createDate, DateTime.now()) / (60 * 60)).round()} hours ago"
+                  :
+                  //Trên 24 giờ, đổi sang ngày
+                  (daysBetween(createDate, DateTime.now()) / (24 * 60 * 60))
+                              .round() <
+                          7
+                      ?
+                      //Dưới 7 ngày
+                      "${(daysBetween(createDate, DateTime.now()) / (24 * 60 * 60)).round()} days ago"
+                      :
+                      //Trên 7 ngày
+                      DateFormat('dd-MM-yy').format(createDate),
+      style: TextStyle(color: Colors.white),
     );
+  }
+
+  int daysBetween(DateTime from, DateTime to) {
+    from = DateTime(
+        from.year, from.month, from.day, from.hour, from.minute, from.second);
+    to = DateTime(to.year, to.month, to.day, to.hour, to.minute, to.second);
+    return (to.difference(from).inSeconds - 7 * 60 * 60);
   }
 }
