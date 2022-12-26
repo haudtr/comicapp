@@ -10,7 +10,7 @@ class ChapterProvider extends ChangeNotifier {
   List<ChapterModel> listChapterOfComic = [];
 
   Future<void> getChapterOfComic(String id) async {
-    String apiURL = "http://${l.localhost}:3000/api/v1/chapter/comic/${id}";
+    String apiURL = "http://${l.localhost}/api/v1/chapter/comic/${id}";
     var client = http.Client();
     var jsonString = await client.get(Uri.parse(apiURL));
     var jsonObject = jsonDecode(jsonString.body);

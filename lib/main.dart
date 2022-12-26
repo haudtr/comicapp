@@ -25,7 +25,7 @@ void main() => runApp(
           ChangeNotifierProvider(create: (_) => CommentProvider()),
         ],
         child: DevicePreview(
-          enabled: false,
+          enabled: true,
           builder: (context) => const MyApp(), // Wrap your app
         ),
       ),

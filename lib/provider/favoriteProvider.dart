@@ -10,7 +10,7 @@ class FavoriteProvider extends ChangeNotifier {
   List<FavoriteModel> listFavoriteComic = [];
 
   Future<void> getComicFavorite(String id) async {
-    String apiURL = "http://${l.localhost}:3000/api/v1/favorite/comic/$id";
+    String apiURL = "http://${l.localhost}/api/v1/favorite/comic/$id";
     var client = http.Client();
     var jsonString = await client.get(Uri.parse(apiURL));
     var jsonObject = jsonDecode(jsonString.body);
@@ -22,18 +22,18 @@ class FavoriteProvider extends ChangeNotifier {
   }
 
   Future<bool> like(String maTruyen, String tenTruyen, String maDocGia) async {
-    final response = await http.post(
-        Uri.parse('http://${l.localhost}:3000/api/v1/favorite/add'),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(
-          <String, dynamic>{
-            "maTruyen": maTruyen,
-            "tenTruyen": tenTruyen,
-            "maDocGia": maDocGia
-          },
-        ));
+    final response =
+        await http.post(Uri.parse('http://${l.localhost}/api/v1/favorite/add'),
+            headers: <String, String>{
+              'Content-Type': 'application/json; charset=UTF-8',
+            },
+            body: jsonEncode(
+              <String, dynamic>{
+                "maTruyen": maTruyen,
+                "tenTruyen": tenTruyen,
+                "maDocGia": maDocGia
+              },
+            ));
     if (response.statusCode == 201) {
       return true;
     } else {
@@ -43,7 +43,7 @@ class FavoriteProvider extends ChangeNotifier {
 
   Future<bool> unlike(String maTruyen, String maDocGia) async {
     final response = await http.post(
-        Uri.parse('http://${l.localhost}:3000/api/v1/favorite/delete/unLike'),
+        Uri.parse('http://${l.localhost}/api/v1/favorite/delete/unLike'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },

@@ -50,9 +50,9 @@ class _DetailComicState extends State<DetailComic> {
     var chapterOfComic = Provider.of<ChapterProvider>(context);
     if (iLoading) {
       (() async {
-        await favorite.getComicFavorite(widget.item.id);
-        await ratingComic.getComicRating(widget.item.id);
-        await chapterOfComic.getChapterOfComic(widget.item.id);
+        favorite.getComicFavorite(widget.item.id);
+        ratingComic.getComicRating(widget.item.id);
+        chapterOfComic.getChapterOfComic(widget.item.id);
         setState(() {
           isFavorite =
               favorite.checkFavorite(widget.item.id, constant.user!.id);
