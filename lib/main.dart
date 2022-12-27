@@ -8,6 +8,7 @@ import 'package:comic_app/provider/commentProvider.dart';
 import 'package:comic_app/provider/favoriteProvider.dart';
 import 'package:comic_app/provider/ratingProvider.dart';
 import 'package:comic_app/provider/user.dart';
+import 'package:comic_app/reading_page.dart';
 import 'package:comic_app/signup.dart';
 
 import 'package:flutter/material.dart';
@@ -25,7 +26,7 @@ void main() => runApp(
           ChangeNotifierProvider(create: (_) => CommentProvider()),
         ],
         child: DevicePreview(
-          enabled: true,
+          enabled: false,
           builder: (context) => const MyApp(), // Wrap your app
         ),
       ),
@@ -45,8 +46,8 @@ class MyApp extends StatelessWidget {
           appBarTheme: const AppBarTheme(
         color: Colors.white,
       )),
-      darkTheme: ThemeData.dark(),
-      home: LoginScreen_v2(),
+      // darkTheme: ThemeData.dark(),
+      home: const LoginScreen(),
     );
   }
 }

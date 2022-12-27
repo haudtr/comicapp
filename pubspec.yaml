@@ -40,7 +40,7 @@ dependencies:
   url_launcher: ^6.0.17
   flutter:
     sdk: flutter
-
+  rating_dialog: ^2.0.1    
 
 
 
