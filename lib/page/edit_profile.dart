@@ -20,49 +20,49 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   @override
   Widget build(BuildContext context) => SafeArea(
-    child: Builder(
-      builder: (context) => Scaffold(
-        appBar: buildAppBar(context),
-        body: ListView(
-          padding: EdgeInsets.symmetric(horizontal: 32),
-          physics: BouncingScrollPhysics(),
-          children: [
-            ProfileWidget(
-              imagePath: user.imagePath,
-              isEdit: true,
-              onClicked: () async {},
+        child: Builder(
+          builder: (context) => Scaffold(
+            appBar: buildAppBar(context),
+            body: ListView(
+              padding: EdgeInsets.symmetric(horizontal: 32),
+              physics: BouncingScrollPhysics(),
+              children: [
+                ProfileWidget(
+                  imagePath: user.imagePath,
+                  isEdit: true,
+                  onClicked: () async {},
+                ),
+                const SizedBox(height: 24),
+                TextFieldWidget(
+                  label: 'Full Name',
+                  text: user.name,
+                  onChanged: (name) {},
+                ),
+                const SizedBox(height: 24),
+                TextFieldWidget(
+                  label: 'Email',
+                  text: user.email,
+                  onChanged: (email) {},
+                ),
+                const SizedBox(height: 10),
+                Center(
+                  child: AnimatedButton(
+                    height: 30,
+                    width: 70,
+                    text: 'Save',
+                    isReverse: true,
+                    selectedTextColor: Colors.black,
+                    transitionType: TransitionType.LEFT_TO_RIGHT,
+                    backgroundColor: Colors.black,
+                    borderColor: Colors.white,
+                    borderRadius: 50,
+                    borderWidth: 2,
+                    onPress: () {},
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(height: 24),
-            TextFieldWidget(
-              label: 'Full Name',
-              text: user.name,
-              onChanged: (name) {},
-            ),
-            const SizedBox(height: 24),
-            TextFieldWidget(
-              label: 'Email',
-              text: user.email,
-              onChanged: (email) {},
-            ),
-            const SizedBox(height: 10),
-            Center(
-              child: AnimatedButton(
-                height: 30,
-                width: 70,
-                text: 'Save',
-                isReverse: true,
-                selectedTextColor: Colors.black,
-                transitionType: TransitionType.LEFT_TO_RIGHT,
-                backgroundColor: Colors.black,
-                borderColor: Colors.white,
-                borderRadius: 50,
-                borderWidth: 2, onPress: () {},
-              ),
-            ),
-
-          ],
+          ),
         ),
-      ),
-    ),
-  );
+      );
 }

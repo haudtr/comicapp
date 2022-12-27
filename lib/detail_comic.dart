@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import 'package:comic_app/models/comic.dart';
 import 'package:comic_app/models/favorite.dart';
 import 'package:comic_app/provider/chapterProvider.dart';
@@ -32,7 +31,7 @@ class _DetailComicState extends State<DetailComic> {
   late double xAlign;
   late Color loginColor;
   late Color signInColor;
-  bool iLoading = true;
+  bool iLoading = false;
   bool isFavorite = false;
   int selectedItem = 1;
   int favoriteCount = 0;
@@ -44,26 +43,18 @@ class _DetailComicState extends State<DetailComic> {
     loginColor = selectedColor;
     signInColor = normalColor;
   }
-=======
-import 'package:comment_box/comment/comment.dart';
-import 'package:flutter/material.dart';
-
-class Profile extends StatelessWidget {
-  const Profile({Key? key}) : super(key: key);
->>>>>>> d7b631573512657c8503e2f25772d3adf0841871
 
   // bool isFavorite = false;
   @override
   Widget build(BuildContext context) {
-<<<<<<< HEAD
     var favorite = Provider.of<FavoriteProvider>(context);
     var ratingComic = Provider.of<RatingProvider>(context);
     var chapterOfComic = Provider.of<ChapterProvider>(context);
     if (iLoading) {
       (() async {
-        favorite.getComicFavorite(widget.item.id);
-        ratingComic.getComicRating(widget.item.id);
-        chapterOfComic.getChapterOfComic(widget.item.id);
+        await favorite.getComicFavorite(widget.item.id);
+        await ratingComic.getComicRating(widget.item.id);
+        await chapterOfComic.getChapterOfComic(widget.item.id);
         setState(() {
           isFavorite =
               favorite.checkFavorite(widget.item.id, constant.user!.id);
@@ -79,7 +70,7 @@ class Profile extends StatelessWidget {
           onTap: () {
             setState(() {
               rateSelected = false;
-              FocusScope.of(context).requestFocus(new FocusNode());
+              FocusScope.of(context).requestFocus(FocusNode());
             });
           },
           child: Scaffold(
@@ -280,7 +271,7 @@ class Profile extends StatelessWidget {
                   });
                 },
                 child: Container(
-                  padding: const EdgeInsets.only(left: 10, right: 10),
+                  padding: const EdgeInsets.only(left: 15, right: 15),
                   width: MediaQuery.of(context).size.width,
                   height: 70,
                   decoration: BoxDecoration(
@@ -319,111 +310,6 @@ class Profile extends StatelessWidget {
                         onRatingUpdate: (rating) {
                           // print(rating);
                         },
-=======
-    return Scaffold(
-      body: Container(
-          child: Column(
-            children: [
-              Container(
-                height: 200,
-               child: Image.asset("assets/images/img_1.png",fit: BoxFit.cover,),
-              ),
-              Container(
-                padding: EdgeInsets.all(20),
-                child: Column(
-                  children: [
-                    Text(
-                      'John Doe',
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(height: 10),
-                    Text(
-                      'Software Developer',
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.grey,
-                      ),
-                    ),
-                    SizedBox(height: 20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          children: [
-                            Text(
-                              'Followers',
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.grey,
-                              ),
-                            ),
-                            SizedBox(height: 10),
-                            Text(
-                              '456',
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            Text(
-                              'Following',
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.grey,
-                              ),
-                            ),
-                            SizedBox(height: 10),
-                            Text(
-                              '123',
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            Text(
-                              'Posts',
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.grey,
-                              ),
-                            ),
-                            SizedBox(height: 10),
-                            Text(
-                              '10',
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 20),
-                    Text(
-                      'Bio',
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.grey,
-                      ),
-                    ),
-                    SizedBox(height: 10),
-                    Text(
-                      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-                      style: TextStyle(
-                        fontSize: 16,
->>>>>>> d7b631573512657c8503e2f25772d3adf0841871
                       ),
                       const Divider(
                         color: Colors.black,
@@ -441,7 +327,6 @@ class Profile extends StatelessWidget {
                             Text(
                               "Đánh giá",
                               style: TextStyle(fontSize: 14),
-                              maxLines: null,
                             ),
                           ],
                         ),
@@ -450,7 +335,6 @@ class Profile extends StatelessWidget {
                   ),
                 ),
               ),
-<<<<<<< HEAD
               const SizedBox(
                 height: 15,
               ),
@@ -539,12 +423,13 @@ class Profile extends StatelessWidget {
                   ),
                 );
               }).toList()
-=======
->>>>>>> d7b631573512657c8503e2f25772d3adf0841871
             ],
-          )
+          ),
+        ),
+      ),
+    );
+  }
 
-<<<<<<< HEAD
   Widget _buildChapList(BuildContext context, ChapterProvider chapterOfComic) {
     return Padding(
       padding: const EdgeInsets.only(left: 30, right: 30),
@@ -634,8 +519,6 @@ class Profile extends StatelessWidget {
             ),
           ),
         ],
-=======
->>>>>>> d7b631573512657c8503e2f25772d3adf0841871
       ),
     );
   }

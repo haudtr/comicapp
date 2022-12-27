@@ -1,4 +1,4 @@
-
+import 'package:comic_app/reading_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../model/user.dart';
@@ -9,11 +9,12 @@ import '../widget/numbers_widget.dart';
 import '../widget/profile_widget.dart';
 import 'edit_profile.dart';
 
-
 class ProfilePage extends StatefulWidget {
   @override
   _ProfilePageState createState() => _ProfilePageState();
 }
+
+bool favoriteSel = false;
 
 class _ProfilePageState extends State<ProfilePage> {
   @override
@@ -41,16 +42,132 @@ class _ProfilePageState extends State<ProfilePage> {
               const SizedBox(height: 24),
               Center(child: buildUpgradeButton()),
               const SizedBox(height: 24),
+              SizedBox(
+                child: Column(
+                  children: [
+                    ListTile(
+                      leading: Container(
+                        width: 30,
+                        height: 30,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(30),
+                          color: Colors.tealAccent.withOpacity(0.1),
+                        ),
+                        child: const Icon(
+                          Icons.favorite,
+                          color: Colors.red,
+                        ),
+                      ),
+                      title: Text(
+                        'Favorite',
+                        style: Theme.of(context).textTheme.bodyText1,
+                      ),
+                      trailing: GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            favoriteSel = !favoriteSel;
+                          });
+                        },
+                        child: Container(
+                          width: 30,
+                          height: 30,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(30),
+                            color: favoriteSel
+                                ? Colors.red
+                                : Colors.grey.withOpacity(0.1),
+                          ),
+                          child: Icon(Icons.navigate_next),
+                        ),
+                      ),
+                    ),
+                    AnimatedContainer(
+                      padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(color: Colors.lightBlue)),
+                      constraints:
+                          BoxConstraints(maxHeight: favoriteSel ? 200 : 0),
+                      duration: const Duration(seconds: 1),
+                      width: double.infinity,
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            SizedBox(
+                              width: double.infinity,
+                              height: 40,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Image.asset(
+                                    "assets/images/img_3.png",
+                                    fit: BoxFit.scaleDown,
+                                  ),
+                                  const SizedBox(
+                                    width: 5,
+                                  ),
+                                  Flexible(
+                                    child: Text(
+                                      "Jujutsu Kaisen",
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            SizedBox(
+                              width: double.infinity,
+                              height: 40,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Image.asset(
+                                    "assets/images/img_3.png",
+                                    fit: BoxFit.scaleDown,
+                                  ),
+                                  const SizedBox(
+                                    width: 5,
+                                  ),
+                                  Flexible(
+                                    child: Text(
+                                      "Jujutsu kaisennnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn",
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
               ListTile(
                 leading: Container(
-                  width: 30,height: 30,
+                  width: 30,
+                  height: 30,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(30),
                     color: Colors.tealAccent.withOpacity(0.1),
                   ),
-                  child: const Icon(Icons.favorite,color: Colors.red,),
+                  child: const Icon(
+                    Icons.language,
+                    color: Colors.red,
+                  ),
                 ),
-                title: Text('Favorite',style: Theme.of(context).textTheme.bodyText1,),
+                title: Text(
+                  'Language',
+                  style: Theme.of(context).textTheme.bodyText1,
+                ),
                 trailing: Container(
                   width: 30,
                   height: 30,
@@ -63,34 +180,21 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               ListTile(
                 leading: Container(
-                  width: 30,height: 30,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(30),
-                    color: Colors.tealAccent.withOpacity(0.1),
-                  ),
-                  child: const Icon(Icons.language,color: Colors.red,),
-                ),
-                title: Text('Language',style: Theme.of(context).textTheme.bodyText1,),
-                trailing: Container(
                   width: 30,
                   height: 30,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(30),
-                    color: Colors.grey.withOpacity(0.1),
-                  ),
-                  child: Icon(Icons.navigate_next),
-                ),
-              ),
-              ListTile(
-                leading: Container(
-                  width: 30,height: 30,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(30),
                     color: Colors.tealAccent.withOpacity(0.1),
                   ),
-                  child: const Icon(Icons.notifications,color: Colors.red,),
+                  child: const Icon(
+                    Icons.notifications,
+                    color: Colors.red,
+                  ),
                 ),
-                title: Text('notifications',style: Theme.of(context).textTheme.bodyText1,),
+                title: Text(
+                  'notifications',
+                  style: Theme.of(context).textTheme.bodyText1,
+                ),
                 trailing: Container(
                   width: 30,
                   height: 30,
@@ -105,12 +209,9 @@ class _ProfilePageState extends State<ProfilePage> {
               ButtonWidget(
                 text: 'Log Out',
                 onClicked: () {
-                  Navigator.of(context).pop();
+                  // Navigator.of(context).pop();
                 },
               ),
-
-
-
             ],
           ),
         ),
@@ -119,44 +220,41 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Widget buildName(User user) => Column(
-    children: [
-      Text(
-        user.name,
-        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
-      ),
-      const SizedBox(height: 4),
-      Text(
-        user.email,
-        style: TextStyle(color: Colors.grey),
-      )
-    ],
-  );
+        children: [
+          Text(
+            user.name,
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            user.email,
+            style: TextStyle(color: Colors.grey),
+          )
+        ],
+      );
 
   Widget buildUpgradeButton() => ButtonWidget(
-    text: 'Edit Profile',
-    onClicked: () {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: ((context) =>
-               EditProfilePage())));
-    },
-  );
+        text: 'Edit Profile',
+        onClicked: () {
+          Navigator.push(context,
+              MaterialPageRoute(builder: ((context) => EditProfilePage())));
+        },
+      );
   Widget buildAbout(User user) => Container(
-    padding: EdgeInsets.symmetric(horizontal: 48),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'About',
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        padding: EdgeInsets.symmetric(horizontal: 48),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'About',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 16),
+            Text(
+              user.about,
+              style: TextStyle(fontSize: 16, height: 1.4),
+            ),
+          ],
         ),
-        const SizedBox(height: 16),
-        Text(
-          user.about,
-          style: TextStyle(fontSize: 16, height: 1.4),
-        ),
-      ],
-    ),
-  );
+      );
 }

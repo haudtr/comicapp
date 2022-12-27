@@ -29,11 +29,7 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
-<<<<<<< HEAD
   loading_animation_widget:
-=======
-  comment_box: ^0.0.18
->>>>>>> d7b631573512657c8503e2f25772d3adf0841871
   google_fonts: ^3.0.1
   google_nav_bar: ^5.0.6
   carousel_indicator: ^1.0.6
@@ -49,11 +45,6 @@ dependencies:
   rating_dialog: ^2.0.1    
 
 
-<<<<<<< HEAD
-=======
-
- 
->>>>>>> d7b631573512657c8503e2f25772d3adf0841871
 
 
   # The following adds the Cupertino Icons font to your application.

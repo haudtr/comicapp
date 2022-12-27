@@ -1,5 +1,6 @@
 // import 'dart:html';
 import 'package:comic_app/models/user.dart';
+import 'package:comic_app/page/profile_page.dart';
 import 'package:provider/provider.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -10,7 +11,7 @@ import 'package:flutter/material.dart';
 // import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:comic_app/constants/constant.dart' as constant;
-
+import 'page/profile_page.dart';
 import 'detail_comic.dart';
 
 class HomeComic extends StatefulWidget {
@@ -46,7 +47,7 @@ class _HomeComicState extends State<HomeComic> {
     return GestureDetector(
       onTap: () {
         setState(() {
-          FocusScope.of(context).requestFocus(new FocusNode());
+          FocusScope.of(context).requestFocus(FocusNode());
         });
       },
       child: Scaffold(
@@ -100,7 +101,14 @@ class _HomeComicState extends State<HomeComic> {
                     child: Ink(
                       child: InkWell(
                         borderRadius: BorderRadius.circular(100.0),
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: ((context) => ProfilePage()),
+                            ),
+                          );
+                        },
                         child: Padding(
                           padding: const EdgeInsets.all(10.0),
                           child: constant.user?.avatar == null
@@ -113,7 +121,6 @@ class _HomeComicState extends State<HomeComic> {
                   )
                 ],
               ),
-<<<<<<< HEAD
             ),
           ],
         ),
@@ -148,24 +155,6 @@ class _HomeComicState extends State<HomeComic> {
                           setState(() {
                             _current = index;
                           });
-=======
-            ), //Trending Manga
-            Container(
-              margin: const EdgeInsets.only(top: 3),
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ...listview1.map(
-                      (e) => ElevatedButton(
-                        onPressed: () {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) {
-                            // do something
-                            return   Profile();
-                          }));
->>>>>>> d7b631573512657c8503e2f25772d3adf0841871
                         },
                       ),
                       items: comicProvider.listTop5.map((i) {
@@ -243,7 +232,6 @@ class _HomeComicState extends State<HomeComic> {
                           ),
                         ],
                       ),
-<<<<<<< HEAD
                     ), //Trending Manga
                     Container(
                       margin: const EdgeInsets.only(top: 3),
@@ -251,48 +239,6 @@ class _HomeComicState extends State<HomeComic> {
                         scrollDirection: Axis.horizontal,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-=======
-                    ),
-                  ],
-                ),
-              ),
-            ), //All Manga
-            Container(
-              margin: const EdgeInsets.only(left: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text("All Manga", style: GoogleFonts.readexPro(fontSize: 15)),
-                  Row(
-                    children: [
-                      IconButton(
-                          onPressed: () {}, icon: const Icon(Icons.more_horiz))
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(
-              height: size.height / 3.4,
-              width: size.width,
-              child: ListView(
-                children: [
-                  ...listview2.map((e) {
-                    return ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) {
-                          // do something
-                          return  Profile();
-                        }));
-                      },
-                      style: ElevatedButton.styleFrom(
-                          elevation: 0,
-                          backgroundColor: Colors.white),
-                      child: Padding(
-                        padding: const EdgeInsets.only(bottom: 15),
-                        child: Column(
->>>>>>> d7b631573512657c8503e2f25772d3adf0841871
                           children: [
                             ...comicProvider.listTop5.map(
                               (e) => ElevatedButton(
