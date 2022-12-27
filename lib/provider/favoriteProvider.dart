@@ -10,7 +10,7 @@ class FavoriteProvider extends ChangeNotifier {
   List<FavoriteModel> listFavoriteComic = [];
 
   Future<void> getComicFavorite(String id) async {
-    String apiURL = "http://${l.localhost}:3000/api/v1/favorite/comic/$id";
+    String apiURL = "http://${l.localhost}/api/v1/favorite/comic/$id";
     var client = http.Client();
     var jsonString = await client.get(Uri.parse(apiURL));
     var jsonObject = jsonDecode(jsonString.body);
