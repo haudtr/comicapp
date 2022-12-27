@@ -190,7 +190,7 @@ class _LoginContentState extends State<LoginContent>
                   if (value.iSignUp) {
                     value.getUser(email);
 
-                    Navigator.push(
+                    Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
                         builder: (context) => HomeComic(),
@@ -302,7 +302,7 @@ class _LoginContentState extends State<LoginContent>
                     await value.loginAccount(lgEmail, lgPassword);
                     if (value.iLogIn) {
                       value.getUser(lgEmail);
-                      Navigator.push(context,
+                      Navigator.pushReplacement(context,
                           MaterialPageRoute(builder: (context) {
                         // do something
                         return HomeComic();

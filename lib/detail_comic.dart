@@ -34,6 +34,7 @@ class _DetailComicState extends State<DetailComic> {
   bool isFavorite = false;
   int selectedItem = 1;
   int favoriteCount = 0;
+  bool rateSelected = false;
   @override
   void initState() {
     super.initState();
@@ -61,57 +62,162 @@ class _DetailComicState extends State<DetailComic> {
         });
       })();
     }
-    return Scaffold(
-      appBar: AppBar(
-        leading: const Padding(
-          padding: EdgeInsets.only(left: 20),
-          child: BackButton(
-            color: Colors.black,
+    return Stack(
+      children: [
+        GestureDetector(
+          onTap: () {
+            setState(() {
+              rateSelected = false;
+            });
+          },
+          child: Scaffold(
+            appBar: AppBar(
+              leading: const Padding(
+                padding: EdgeInsets.only(left: 20),
+                child: BackButton(
+                  color: Colors.black,
+                ),
+              ),
+              actions: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 20),
+                  child: IconButton(
+                    onPressed: () {},
+                    icon: const Icon(
+                      Icons.more_horiz,
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
+              ],
+              elevation: 0,
+            ),
+            body: iLoading
+                ? Center(
+                    child: LoadingAnimationWidget.dotsTriangle(
+                    color: Colors.blueGrey,
+                    size: 50,
+                  ))
+                : SafeArea(
+                    child: Column(
+                      children: [
+                        _buildCoverImage(context),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        _buildComicTitleAndFavoriteButton(context, favorite),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        _buildOptionButton(context),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Expanded(
+                          child: selectedItem == 1
+                              ? _buildDescription(context, ratingComic)
+                              : _buildChapList(context, chapterOfComic),
+                        ),
+                      ],
+                    ),
+                  ),
           ),
         ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 20),
-            child: IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.more_horiz,
-                color: Colors.black,
-              ),
-            ),
-          ),
-        ],
-        elevation: 0,
-      ),
-      body: iLoading
-          ? Center(
-              child: LoadingAnimationWidget.dotsTriangle(
-              color: Colors.blueGrey,
-              size: 50,
-            ))
-          : SafeArea(
+        Positioned(
+            child: AnimatedAlign(
+          curve: Curves.fastOutSlowIn,
+          alignment: rateSelected ? Alignment.center : Alignment.center,
+          duration: const Duration(seconds: 1),
+          child: SingleChildScrollView(
+            child: Container(
+              margin: EdgeInsets.only(left: 10, right: 10),
+              padding: EdgeInsets.only(left: 10, right: 10),
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(
+                    width: 4,
+                    color: const Color.fromARGB(255, 146, 198, 224),
+                  )),
+              width: rateSelected
+                  ? MediaQuery.of(context).size.width * (2 / 3)
+                  : 0,
+              height: rateSelected ? MediaQuery.of(context).size.height / 3 : 0,
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  _buildCoverImage(context),
+                  const CircleAvatar(
+                    backgroundImage: AssetImage(
+                      "assets/images/khanghy.jpg",
+                    ),
+                  ),
                   const SizedBox(
                     height: 10,
                   ),
-                  _buildComicTitleAndFavoriteButton(context, favorite),
+                  const Text(
+                    "Khang Hy",
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.black,
+                    ),
+                  ),
                   const SizedBox(
                     height: 10,
                   ),
-                  _buildOptionButton(context),
+                  RatingBar(
+                    initialRating: 0,
+                    itemSize: 25,
+                    direction: Axis.horizontal,
+                    allowHalfRating: true,
+                    itemCount: 5,
+                    ratingWidget: RatingWidget(
+                      full: const Icon(
+                        Icons.star,
+                        color: Colors.blue,
+                      ),
+                      half: const Icon(
+                        Icons.star_half,
+                        color: Colors.blue,
+                      ),
+                      empty: const Icon(
+                        Icons.star_border,
+                        color: Colors.blue,
+                      ),
+                    ),
+                    itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+                    onRatingUpdate: (rating) {
+                      // print(rating);
+                    },
+                  ),
                   const SizedBox(
                     height: 10,
                   ),
-                  Expanded(
-                    child: selectedItem == 1
-                        ? _buildDescription(context, ratingComic)
-                        : _buildChapList(context, chapterOfComic),
+                  SizedBox(
+                    width: double.infinity,
+                    height: 60,
+                    child: SingleChildScrollView(
+                      child: TextFormField(
+                        showCursor: true,
+                        maxLines: null,
+                        decoration: const InputDecoration(
+                          hintText: "Nhập bình luận",
+                        ),
+                      ),
+                    ),
                   ),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  ElevatedButton(
+                      style: ElevatedButton.styleFrom(fixedSize: Size(80, 40)),
+                      onPressed: () {},
+                      child: Text("Rate"))
                 ],
               ),
             ),
+          ),
+        ))
+      ],
     );
   }
 
@@ -141,61 +247,69 @@ class _DetailComicState extends State<DetailComic> {
               const SizedBox(
                 height: 10,
               ),
-              Container(
-                padding: const EdgeInsets.only(left: 15, right: 15),
-                width: MediaQuery.of(context).size.width,
-                height: 70,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(
-                    color: const Color.fromARGB(255, 146, 198, 224),
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    rateSelected = !rateSelected;
+                  });
+                },
+                child: Container(
+                  padding: const EdgeInsets.only(left: 15, right: 15),
+                  width: MediaQuery.of(context).size.width,
+                  height: 70,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(
+                      color: const Color.fromARGB(255, 146, 198, 224),
+                    ),
                   ),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    RatingBar(
-                      initialRating:
-                          ratingComic.getRate(ratingComic.listRatingComic),
-                      ignoreGestures: true,
-                      itemSize: 35,
-                      direction: Axis.horizontal,
-                      allowHalfRating: true,
-                      itemCount: 5,
-                      ratingWidget: RatingWidget(
-                        full: const Icon(
-                          Icons.star,
-                          color: Colors.blue,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      RatingBar(
+                        initialRating:
+                            ratingComic.getRate(ratingComic.listRatingComic),
+                        ignoreGestures: true,
+                        itemSize: 35,
+                        direction: Axis.horizontal,
+                        allowHalfRating: true,
+                        itemCount: 5,
+                        ratingWidget: RatingWidget(
+                          full: const Icon(
+                            Icons.star,
+                            color: Colors.blue,
+                          ),
+                          half: const Icon(
+                            Icons.star_half,
+                            color: Colors.blue,
+                          ),
+                          empty: const Icon(
+                            Icons.star_border,
+                            color: Colors.blue,
+                          ),
                         ),
-                        half: const Icon(
-                          Icons.star_half,
-                          color: Colors.blue,
-                        ),
-                        empty: const Icon(
-                          Icons.star_border,
-                          color: Colors.blue,
-                        ),
+                        itemPadding:
+                            const EdgeInsets.symmetric(horizontal: 4.0),
+                        onRatingUpdate: (rating) {
+                          // print(rating);
+                        },
                       ),
-                      itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
-                      onRatingUpdate: (rating) {
-                        // print(rating);
-                      },
-                    ),
-                    const Divider(
-                      color: Colors.black,
-                    ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          ratingComic.listRatingComic.length.toString(),
-                          style: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.bold),
-                        ),
-                        Text("Đánh giá"),
-                      ],
-                    ),
-                  ],
+                      const Divider(
+                        color: Colors.black,
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            ratingComic.listRatingComic.length.toString(),
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold),
+                          ),
+                          Text("Đánh giá"),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
               const SizedBox(
@@ -319,7 +433,11 @@ class _DetailComicState extends State<DetailComic> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              ReadingPageScreen(item: e)));
+                                              ReadingPageScreen(
+                                                  item: e,
+                                                  maxChapter: chapterOfComic
+                                                      .listChapterOfComic
+                                                      .length)));
                                 },
                                 child: SizedBox(
                                   width: MediaQuery.of(context).size.width,
@@ -327,7 +445,7 @@ class _DetailComicState extends State<DetailComic> {
                                   child: Row(
                                     children: [
                                       Text(
-                                        "Chương " + e.tapSo.toString(),
+                                        "Chapter " + e.tapSo.toString(),
                                         style: TextStyle(
                                           fontSize: 20,
                                           fontWeight: FontWeight.bold,
@@ -360,11 +478,15 @@ class _DetailComicState extends State<DetailComic> {
                                                         FontWeight.bold),
                                               ),
                                               Text(
-                                                "1 ngay truoc - 12 view",
-                                                style: TextStyle(
+                                                DateTime.now()
+                                                        .difference(e.ngayDang)
+                                                        .inDays
+                                                        .toString() +
+                                                    " days ago - 12 view",
+                                                style: const TextStyle(
                                                     fontSize: 18,
                                                     fontWeight:
-                                                        FontWeight.bold),
+                                                        FontWeight.w500),
                                               ),
                                             ],
                                           ),
