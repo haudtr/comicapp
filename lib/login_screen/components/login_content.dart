@@ -34,224 +34,187 @@ class _LoginContentState extends State<LoginContent>
 
   late final List<Widget> createAccountContent;
 
-  Widget inputField(String hint, IconData iconData) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 36, vertical: 5),
-      child: SizedBox(
-        height: 50,
-        child: Material(
-          // elevation: 8,
-          shadowColor: Colors.black87,
-          color: Colors.transparent,
-          borderRadius: BorderRadius.circular(30),
-          child: TextFormField(
-              cursorHeight: 50,
-              textAlignVertical: TextAlignVertical.bottom,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
-                  borderSide: BorderSide.none,
-                ),
-                filled: true,
-                fillColor: Colors.white.withOpacity(0.5),
-                hintText: hint,
-                prefixIcon: Icon(iconData),
-              ),
-              onSaved: (String? value) {},
-              validator: (String? value) {
-                if (value!.isEmpty) {
-                  return "Vui long nhap mat khau";
-                }
-                return null;
-              }),
-        ),
-      ),
-    );
-  }
-
   @override
   void initState() {
     // BuildContext context = null;
 
     createAccountContent = [
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 36, vertical: 5),
-        child: SizedBox(
-          height: 50,
-          child: Material(
-            // elevation: 8,
-            shadowColor: Colors.black87,
-            color: Colors.transparent,
-            borderRadius: BorderRadius.circular(30),
-            child: TextFormField(
-                cursorHeight: 50,
-                textAlignVertical: TextAlignVertical.bottom,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
-                    borderSide: BorderSide.none,
-                  ),
-                  filled: true,
-                  fillColor: Colors.white.withOpacity(0.5),
-                  hintText: 'Username',
-                  prefixIcon: Icon(Ionicons.person_outline),
-                ),
-                onSaved: (String? value) {},
-                validator: (String? value) {
-                  if (value!.isEmpty) {
-                    return "Vui long nhap mat khau";
-                  }
-                  return null;
-                }),
+      Container(
+        height: 70,
+        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 5),
+        child: TextFormField(
+          decoration: InputDecoration(
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(30),
+              borderSide: BorderSide.none,
+            ),
+            filled: true,
+            fillColor: Colors.white.withOpacity(0.7),
+            hintText: "Username",
+            prefixIcon: Icon(Ionicons.person_outline),
           ),
-        ),
-      ),
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 36, vertical: 5),
-        child: SizedBox(
-          height: 50,
-          child: Material(
-            // elevation: 8,
-            shadowColor: Colors.black87,
-            color: Colors.transparent,
-            borderRadius: BorderRadius.circular(30),
-            child: TextFormField(
-                cursorHeight: 50,
-                textAlignVertical: TextAlignVertical.bottom,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
-                    borderSide: BorderSide.none,
-                  ),
-                  filled: true,
-                  fillColor: Colors.white.withOpacity(0.5),
-                  hintText: 'Email',
-                  prefixIcon: Icon(Ionicons.mail_outline),
-                ),
-                onSaved: (String? value) {},
-                validator: (String? value) {
-                  if (value!.isEmpty) {
-                    return "Vui long nhap mat khau";
-                  }
-                  return null;
-                }),
-          ),
-        ),
-      ),
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 36, vertical: 5),
-        child: SizedBox(
-          height: 50,
-          child: Material(
-            // elevation: 8,
-            shadowColor: Colors.black87,
-            color: Colors.transparent,
-            borderRadius: BorderRadius.circular(30),
-            child: TextFormField(
-                cursorHeight: 50,
-                textAlignVertical: TextAlignVertical.bottom,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
-                    borderSide: BorderSide.none,
-                  ),
-                  filled: true,
-                  fillColor: Colors.white.withOpacity(0.5),
-                  hintText: 'PhoneNumber',
-                  prefixIcon: Icon(Ionicons.phone_landscape_outline),
-                ),
-                onSaved: (String? value) {},
-                validator: (String? value) {
-                  if (value!.isEmpty) {
-                    return "Vui long nhap mat khau";
-                  }
-                  return null;
-                }),
-          ),
-        ),
-      ),
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 36, vertical: 5),
-        child: SizedBox(
-          height: 50,
-          child: Material(
-            // elevation: 8,
-            shadowColor: Colors.black87,
-            color: Colors.transparent,
-            borderRadius: BorderRadius.circular(30),
-            child: TextFormField(
-                cursorHeight: 50,
-                textAlignVertical: TextAlignVertical.bottom,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
-                    borderSide: BorderSide.none,
-                  ),
-                  filled: true,
-                  fillColor: Colors.white.withOpacity(0.5),
-                  hintText: 'Password',
-                  prefixIcon: Icon(Ionicons.lock_closed_outline),
-                ),
-                onSaved: (String? value) {},
-                validator: (String? value) {
-                  if (value!.isEmpty) {
-                    return "Vui long nhap mat khau";
-                  }
-                  return null;
-                }),
-          ),
-        ),
-      ),
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 36, vertical: 5),
-        child: SizedBox(
-          height: 50,
-          child: Material(
-            // elevation: 8,
-            shadowColor: Colors.black87,
-            color: Colors.transparent,
-            borderRadius: BorderRadius.circular(30),
-            child: TextFormField(
-                cursorHeight: 50,
-                textAlignVertical: TextAlignVertical.bottom,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
-                    borderSide: BorderSide.none,
-                  ),
-                  filled: true,
-                  fillColor: Colors.white.withOpacity(0.5),
-                  hintText: 'rePassword',
-                  prefixIcon: Icon(Ionicons.lock_closed_outline),
-                ),
-                onSaved: (String? value) {},
-                validator: (String? value) {
-                  if (value!.isEmpty) {
-                    return "Vui long nhap mat khau";
-                  }
-                  return null;
-                }),
-          ),
-        ),
-      ),
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 135, vertical: 16),
-        child: ElevatedButton(
-          onPressed: () {
-            if (_formKey.currentState!.validate()) {}
+          onSaved: (String? value) {},
+          validator: (String? value) {
+            if (value!.isEmpty) return "Username is empty!";
+            userName = value;
+            return null;
           },
-          style: ElevatedButton.styleFrom(
-            padding: const EdgeInsets.symmetric(vertical: 14),
-            shape: const StadiumBorder(),
-            primary: kSecondaryColor,
-            elevation: 8,
-            shadowColor: Colors.black87,
+        ),
+      ),
+      const SizedBox(
+        height: 3,
+      ),
+      Consumer<UserProvider>(
+        builder: (context, v, child) => Container(
+          height: 70,
+          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 5),
+          child: TextFormField(
+            decoration: InputDecoration(
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(30),
+                borderSide: BorderSide.none,
+              ),
+              filled: true,
+              fillColor: Colors.white.withOpacity(0.7),
+              hintText: "Email",
+              prefixIcon: Icon(Ionicons.mail_outline),
+            ),
+            onSaved: (String? value) {},
+            validator: (String? value) {
+              if (value!.isEmpty)
+                return "Email is empty!";
+              else if (!v.iSignUp) {
+                v.iSignUp = true;
+                return "Email already exists!";
+              }
+              email = value;
+              return null;
+            },
           ),
-          child: const Text(
-            "Register",
-            style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
+        ),
+      ),
+      const SizedBox(
+        height: 3,
+      ),
+      Container(
+        height: 70,
+        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 5),
+        child: TextFormField(
+          decoration: InputDecoration(
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(30),
+              borderSide: BorderSide.none,
+            ),
+            filled: true,
+            fillColor: Colors.white.withOpacity(0.7),
+            hintText: "Phonenumber",
+            prefixIcon: Icon(Ionicons.phone_landscape_outline),
+          ),
+          onSaved: (String? value) {},
+          validator: (String? value) {
+            if (value!.isEmpty) return "Phonenumber is empty!";
+            phoneNumber = value;
+            return null;
+          },
+        ),
+      ),
+      const SizedBox(
+        height: 3,
+      ),
+      Container(
+        height: 70,
+        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 5),
+        child: TextFormField(
+          decoration: InputDecoration(
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(30),
+              borderSide: BorderSide.none,
+            ),
+            filled: true,
+            fillColor: Colors.white.withOpacity(0.7),
+            hintText: "Password",
+            prefixIcon: Icon(Ionicons.lock_closed_outline),
+          ),
+          onSaved: (String? value) {},
+          validator: (String? value) {
+            if (value!.isEmpty) return "Password is empty!";
+            password = value;
+            return null;
+          },
+        ),
+      ),
+      const SizedBox(
+        height: 3,
+      ),
+      Container(
+        height: 70,
+        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 5),
+        child: TextFormField(
+          decoration: InputDecoration(
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(30),
+              borderSide: BorderSide.none,
+            ),
+            filled: true,
+            fillColor: Colors.white.withOpacity(0.7),
+            hintText: "rePassword",
+            prefixIcon: Icon(Ionicons.lock_closed_outline),
+          ),
+          onSaved: (String? value) {},
+          validator: (String? value) {
+            if (value!.isEmpty)
+              return "rePassword is empty!";
+            else if (password != value)
+              return "rePassword and password don't match!";
+            rePassword = value;
+            return null;
+          },
+        ),
+      ),
+      const SizedBox(
+        height: 3,
+      ),
+      Consumer<UserProvider>(
+        builder: (context, value, child) => Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 135, vertical: 16),
+          child: ElevatedButton(
+            onPressed: () {
+              if (__formKey.currentState!.validate()) {
+                // setState(() {
+                (() async {
+                  value.iSignUp = true;
+
+                  await value.signUpAccount(
+                      userName, email, phoneNumber, password);
+                  // setState(() {
+                  if (value.iSignUp) {
+                    value.getUser(email);
+
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => HomeComic(),
+                      ),
+                    );
+                  }
+                  // });
+                })();
+                // });
+              }
+            },
+            style: ElevatedButton.styleFrom(
+              padding: const EdgeInsets.symmetric(vertical: 14),
+              shape: const StadiumBorder(),
+              primary: kSecondaryColor,
+              elevation: 8,
+              shadowColor: Colors.black87,
+            ),
+            child: const Text(
+              "Register",
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
         ),
@@ -281,7 +244,7 @@ class _LoginContentState extends State<LoginContent>
         ),
       ),
       const SizedBox(
-        height: 10,
+        height: 7,
       ),
       Consumer<UserProvider>(
         builder: (context, v, child) => Container(
@@ -339,7 +302,7 @@ class _LoginContentState extends State<LoginContent>
                     await value.loginAccount(lgEmail, lgPassword);
                     if (value.iLogIn) {
                       value.getUser(lgEmail);
-                      Navigator.push(context,
+                      Navigator.pushReplacement(context,
                           MaterialPageRoute(builder: (context) {
                         // do something
                         return HomeComic();

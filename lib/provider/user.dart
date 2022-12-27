@@ -37,7 +37,7 @@ class UserProvider extends ChangeNotifier {
         phoneNumber: jsonObject[0]['phoneNumber'],
         avatar: jsonObject[0]['avatar'],
         tenUser: jsonObject[0]['tenUser']);
-    print(constant.user);
+    // print(constant.user);
     notifyListeners();
   }
 

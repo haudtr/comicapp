@@ -13,7 +13,7 @@ class ChapterModel {
   String tenTruyen;
   int tapSo;
   String ten;
-  String ngayDang;
+  DateTime ngayDang;
   List<dynamic> noiDung;
 
   ChapterModel(
@@ -32,7 +32,7 @@ class ChapterModel {
       tenTruyen: obj['tenTruyen'],
       tapSo: int.parse(obj['tapSo'].toString()),
       ten: obj['ten'],
-      ngayDang: obj['ngayDang'],
+      ngayDang: DateTime.parse(obj['ngayDang']),
       noiDung: obj['noiDung'].map((e) {
         return nd.fromJson(e);
       }).toList(),
