@@ -13,7 +13,7 @@ class ComicProvider extends ChangeNotifier {
   List<ComicModel> comicID = [];
 
   Future<void> getList() async {
-    String apiURL = "http://${l.localhost}/api/v1/comic";
+    String apiURL = "http://${l.localhost}:3000/api/v1/comic";
     var client = http.Client();
     var jsonString = await client.get(Uri.parse(apiURL));
     var jsonObject = jsonDecode(jsonString.body);
