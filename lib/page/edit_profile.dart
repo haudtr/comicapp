@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_animated_button/flutter_animated_button.dart';
 import '../model/user.dart';
 import '../utils/user_preferences.dart';
 import '../widget/appbar_widget.dart';
@@ -14,6 +15,8 @@ class EditProfilePage extends StatefulWidget {
 
 class _EditProfilePageState extends State<EditProfilePage> {
   User user = UserPreferences.myUser;
+
+  get submitTextStyle => null;
 
   @override
   Widget build(BuildContext context) => SafeArea(
@@ -41,21 +44,22 @@ class _EditProfilePageState extends State<EditProfilePage> {
               text: user.email,
               onChanged: (email) {},
             ),
-            const SizedBox(height: 24),
-            TextFieldWidget(
-              label: 'About',
-              text: user.about,
-              maxLines: 5,
-              onChanged: (about) {},
-            ),
             const SizedBox(height: 10),
-            ButtonWidget(
-              text: 'Save',
-              onClicked: () {
-                UserPreferences.setUser(user);
-                Navigator.of(context).pop();
-              },
+            Center(
+              child: AnimatedButton(
+                height: 30,
+                width: 70,
+                text: 'Save',
+                isReverse: true,
+                selectedTextColor: Colors.black,
+                transitionType: TransitionType.LEFT_TO_RIGHT,
+                backgroundColor: Colors.black,
+                borderColor: Colors.white,
+                borderRadius: 50,
+                borderWidth: 2, onPress: () {},
+              ),
             ),
+
           ],
         ),
       ),

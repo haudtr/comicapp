@@ -1,7 +1,6 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import '../model/user.dart';
 import '../utils/user_preferences.dart';
 import '../widget/appbar_widget.dart';
@@ -21,8 +20,8 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     final user = UserPreferences.myUser;
 
-    return SafeArea(
-      child: Builder(
+    return MaterialApp(
+      home: Builder(
         builder: (context) => Scaffold(
           appBar: buildAppBar(context),
           body: ListView(
@@ -42,9 +41,66 @@ class _ProfilePageState extends State<ProfilePage> {
               const SizedBox(height: 24),
               Center(child: buildUpgradeButton()),
               const SizedBox(height: 24),
-              NumbersWidget(),
-              const SizedBox(height: 48),
-              buildAbout(user),
+              ListTile(
+                leading: Container(
+                  width: 30,height: 30,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(30),
+                    color: Colors.tealAccent.withOpacity(0.1),
+                  ),
+                  child: const Icon(Icons.favorite,color: Colors.red,),
+                ),
+                title: Text('Favorite',style: Theme.of(context).textTheme.bodyText1,),
+                trailing: Container(
+                  width: 30,
+                  height: 30,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(30),
+                    color: Colors.grey.withOpacity(0.1),
+                  ),
+                  child: Icon(Icons.navigate_next),
+                ),
+              ),
+              ListTile(
+                leading: Container(
+                  width: 30,height: 30,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(30),
+                    color: Colors.tealAccent.withOpacity(0.1),
+                  ),
+                  child: const Icon(Icons.language,color: Colors.red,),
+                ),
+                title: Text('Language',style: Theme.of(context).textTheme.bodyText1,),
+                trailing: Container(
+                  width: 30,
+                  height: 30,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(30),
+                    color: Colors.grey.withOpacity(0.1),
+                  ),
+                  child: Icon(Icons.navigate_next),
+                ),
+              ),
+              ListTile(
+                leading: Container(
+                  width: 30,height: 30,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(30),
+                    color: Colors.tealAccent.withOpacity(0.1),
+                  ),
+                  child: const Icon(Icons.notifications,color: Colors.red,),
+                ),
+                title: Text('notifications',style: Theme.of(context).textTheme.bodyText1,),
+                trailing: Container(
+                  width: 30,
+                  height: 30,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(30),
+                    color: Colors.grey.withOpacity(0.1),
+                  ),
+                  child: Icon(Icons.navigate_next),
+                ),
+              ),
               const SizedBox(height: 20),
               ButtonWidget(
                 text: 'Log Out',
@@ -52,6 +108,9 @@ class _ProfilePageState extends State<ProfilePage> {
                   Navigator.of(context).pop();
                 },
               ),
+
+
+
             ],
           ),
         ),
