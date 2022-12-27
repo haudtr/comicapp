@@ -56,22 +56,29 @@ class _LoginScreenState extends State<LoginScreen_v2> {
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
 
-    return Scaffold(
-      body: Stack(
-        children: [
-          Positioned(
-            top: -160,
-            left: -30,
-            child: topWidget(screenSize.width),
-          ),
-          Positioned(
-            bottom: -180,
-            left: -40,
-            child: bottomWidget(screenSize.width),
-          ),
-          CenterWidget(size: screenSize),
-          const LoginContent(),
-        ],
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          FocusScope.of(context).requestFocus(new FocusNode());
+        });
+      },
+      child: Scaffold(
+        body: Stack(
+          children: [
+            Positioned(
+              top: -160,
+              left: -30,
+              child: topWidget(screenSize.width),
+            ),
+            Positioned(
+              bottom: -180,
+              left: -40,
+              child: bottomWidget(screenSize.width),
+            ),
+            CenterWidget(size: screenSize),
+            const LoginContent(),
+          ],
+        ),
       ),
     );
   }
