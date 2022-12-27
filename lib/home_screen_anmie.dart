@@ -113,6 +113,7 @@ class _HomeComicState extends State<HomeComic> {
                   )
                 ],
               ),
+<<<<<<< HEAD
             ),
           ],
         ),
@@ -147,6 +148,24 @@ class _HomeComicState extends State<HomeComic> {
                           setState(() {
                             _current = index;
                           });
+=======
+            ), //Trending Manga
+            Container(
+              margin: const EdgeInsets.only(top: 3),
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ...listview1.map(
+                      (e) => ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
+                            // do something
+                            return   Profile();
+                          }));
+>>>>>>> d7b631573512657c8503e2f25772d3adf0841871
                         },
                       ),
                       items: comicProvider.listTop5.map((i) {
@@ -224,6 +243,7 @@ class _HomeComicState extends State<HomeComic> {
                           ),
                         ],
                       ),
+<<<<<<< HEAD
                     ), //Trending Manga
                     Container(
                       margin: const EdgeInsets.only(top: 3),
@@ -231,6 +251,48 @@ class _HomeComicState extends State<HomeComic> {
                         scrollDirection: Axis.horizontal,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
+=======
+                    ),
+                  ],
+                ),
+              ),
+            ), //All Manga
+            Container(
+              margin: const EdgeInsets.only(left: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("All Manga", style: GoogleFonts.readexPro(fontSize: 15)),
+                  Row(
+                    children: [
+                      IconButton(
+                          onPressed: () {}, icon: const Icon(Icons.more_horiz))
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(
+              height: size.height / 3.4,
+              width: size.width,
+              child: ListView(
+                children: [
+                  ...listview2.map((e) {
+                    return ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          // do something
+                          return  Profile();
+                        }));
+                      },
+                      style: ElevatedButton.styleFrom(
+                          elevation: 0,
+                          backgroundColor: Colors.white),
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom: 15),
+                        child: Column(
+>>>>>>> d7b631573512657c8503e2f25772d3adf0841871
                           children: [
                             ...comicProvider.listTop5.map(
                               (e) => ElevatedButton(
