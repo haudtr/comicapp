@@ -271,7 +271,7 @@ class _DetailComicState extends State<DetailComic> {
                   });
                 },
                 child: Container(
-                  padding: const EdgeInsets.only(left: 15, right: 15),
+                  padding: const EdgeInsets.only(left: 10, right: 10),
                   width: MediaQuery.of(context).size.width,
                   height: 70,
                   decoration: BoxDecoration(
@@ -321,10 +321,14 @@ class _DetailComicState extends State<DetailComic> {
                           children: [
                             Text(
                               ratingComic.listRatingComic.length.toString(),
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontSize: 18, fontWeight: FontWeight.bold),
                             ),
-                            Text("Đánh giá"),
+                            Text(
+                              "Đánh giá",
+                              style: TextStyle(fontSize: 14),
+                              maxLines: null,
+                            ),
                           ],
                         ),
                       ),
