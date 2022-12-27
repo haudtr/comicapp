@@ -63,6 +63,7 @@ class _LoginScreenState extends State<LoginScreen_v2> {
         });
       },
       child: Scaffold(
+        resizeToAvoidBottomInset: true,
         body: Stack(
           children: [
             Positioned(

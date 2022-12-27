@@ -8,6 +8,7 @@ import '../constants/localhost.dart' as l;
 
 class FavoriteProvider extends ChangeNotifier {
   List<FavoriteModel> listFavoriteComic = [];
+  List<FavoriteModel> listFavoriteComicUser = [];
 
   Future<void> getComicFavorite(String id) async {
     String apiURL = "http://${l.localhost}:3000/api/v1/favorite/comic/$id";
@@ -16,6 +17,18 @@ class FavoriteProvider extends ChangeNotifier {
     var jsonObject = jsonDecode(jsonString.body);
     var favoriteComicList = jsonObject as List;
     listFavoriteComic = favoriteComicList.map((e) {
+      return FavoriteModel.fromJson(e);
+    }).toList();
+    notifyListeners();
+  }
+
+  Future<void> getComicFavoriteUser(String id) async {
+    String apiURL = "http://${l.localhost}:3000/api/v1/favorite/account/${id}";
+    var client = http.Client();
+    var jsonString = await client.get(Uri.parse(apiURL));
+    var jsonObject = jsonDecode(jsonString.body);
+    var favoriteComicList = jsonObject as List;
+    listFavoriteComicUser = favoriteComicList.map((e) {
       return FavoriteModel.fromJson(e);
     }).toList();
     notifyListeners();
