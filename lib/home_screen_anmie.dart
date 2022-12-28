@@ -1,5 +1,6 @@
 // import 'dart:html';
 import 'package:comic_app/models/user.dart';
+import 'package:comic_app/profile_page.dart';
 import 'package:provider/provider.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -99,7 +100,12 @@ class _HomeComicState extends State<HomeComic> {
                     child: Ink(
                       child: InkWell(
                         // borderRadius: BorderRadius.circular(50.0),
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ProfilePage()));
+                        },
                         child: Container(
                           // decoration: ,
                           padding: const EdgeInsets.all(6.0),

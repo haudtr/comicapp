@@ -8,7 +8,7 @@ import 'package:comic_app/constants/constant.dart' as constant;
 import 'package:provider/provider.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:google_fonts/google_fonts.dart';
-
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:intl/intl.dart';
 
 class ReadingPageScreen extends StatefulWidget {
@@ -379,7 +379,7 @@ class _ReadingPageScreenState extends State<ReadingPageScreen> {
                 color: Colors.transparent,
                 alignment: Alignment.center,
                 child: Text(
-                  'Slide UI',
+                  'Zen UI',
                   style: GoogleFonts.readexPro(
                       fontWeight: FontWeight.bold,
                       color: signInColor,
@@ -436,7 +436,65 @@ class _ReadingPageScreenState extends State<ReadingPageScreen> {
   }
 
   Widget _buildSlideUI(BuildContext context) {
-    return const SizedBox();
+    return Column(
+      children: [
+        Text(
+          "Chapter " + widget.item.tapSo.toString() + ": " + widget.item.ten,
+          style: GoogleFonts.readexPro(
+              color: Colors.blueGrey.shade800, fontSize: 18.0),
+        ),
+        // const SizedBox(
+        //   height: 5,
+        // ),
+        // Expanded(
+        //   child: ListView(
+        //     scrollDirection: Axis.horizontal,
+        //     reverse: true,
+        //     children: [
+        // ...widget.item.noiDung.map((e) => Padding(
+        //       padding:
+        //           const EdgeInsets.only(left: 14, right: 14, bottom: 10),
+        //       child: SizedBox(
+        //         width: MediaQuery.of(context).size.width,
+        //         // height: MediaQuery.of(context).size.height,
+        //         child: Image.network(
+        //           e.anh,
+        //           // fit: BoxFit.fill,
+        //         ),
+        //       ),
+        //     )),
+        //     ],
+        //   ),
+        // )
+        Expanded(
+          child: CarouselSlider(
+            items: widget.item.noiDung
+                .map((e) => Padding(
+                      padding:
+                          const EdgeInsets.only(left: 5, right: 5, bottom: 10),
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        // height: MediaQuery.of(context).size.height,
+                        child: Image.network(
+                          e.anh,
+                          // fit: BoxFit.fill,
+                        ),
+                      ),
+                    ))
+                .toList(),
+            // carouselController: buttonCarouselController,
+            options: CarouselOptions(
+              reverse: true,
+              height: MediaQuery.of(context).size.height,
+              // scrollPhysics: const BouncingScrollPhysics(),
+              enableInfiniteScroll: false,
+              viewportFraction: 1,
+            ),
+          ),
+        ),
+        // DropdownMenuItem(child: child)
+      ],
+    );
   }
 
   Widget _buildChangeChapterBar(

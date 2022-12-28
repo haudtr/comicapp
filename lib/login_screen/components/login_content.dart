@@ -17,7 +17,7 @@ enum Screens {
 
 var lgEmail, lgPassword;
 var userName, email, phoneNumber, password, rePassword;
-bool errorPass = false;
+bool errorPass = true;
 
 class LoginContent extends StatefulWidget {
   const LoginContent({Key? key}) : super(key: key);
@@ -86,6 +86,10 @@ class _LoginContentState extends State<LoginContent>
               else if (!v.iSignUp) {
                 v.iSignUp = true;
                 return "Email already exists!";
+              } else if (!RegExp(
+                      r'^.+@[a-zA-Z]+\.{1}[a-zA-Z]+(\.{0,1}[a-zA-Z]+)$')
+                  .hasMatch(value)) {
+                return "Email invalidate!";
               }
               email = value;
               return null;
@@ -125,6 +129,8 @@ class _LoginContentState extends State<LoginContent>
         height: 70,
         padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 5),
         child: TextFormField(
+          obscureText: true,
+          enableSuggestions: false,
           decoration: InputDecoration(
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(30),
@@ -137,7 +143,10 @@ class _LoginContentState extends State<LoginContent>
           ),
           onSaved: (String? value) {},
           validator: (String? value) {
-            if (value!.isEmpty) return "Password is empty!";
+            if (value!.isEmpty)
+              return "Password is empty!";
+            else if (value.length < 6)
+              return "Password must be at least 6 characters!";
             password = value;
             return null;
           },
@@ -150,6 +159,8 @@ class _LoginContentState extends State<LoginContent>
         height: 70,
         padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 5),
         child: TextFormField(
+          obscureText: true,
+          enableSuggestions: false,
           decoration: InputDecoration(
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(30),
@@ -196,6 +207,9 @@ class _LoginContentState extends State<LoginContent>
                         builder: (context) => HomeComic(),
                       ),
                     );
+                  } else {
+                    __formKey.currentState!.validate();
+                    setState(() {});
                   }
                   // });
                 })();
@@ -267,8 +281,8 @@ class _LoginContentState extends State<LoginContent>
             validator: (String? value) {
               if (value!.isEmpty) {
                 return "Password is empty!";
-              } else if (errorPass) {
-                errorPass = false;
+              } else if (!errorPass) {
+                errorPass = true;
                 return "Email or password is incorrect!";
               }
               lgPassword = value;
@@ -298,6 +312,8 @@ class _LoginContentState extends State<LoginContent>
             onPressed: () {
               setState(() {
                 if (_formKey.currentState!.validate()) {
+                  errorPass = true;
+
                   (() async {
                     await value.loginAccount(lgEmail, lgPassword);
                     if (value.iLogIn) {
@@ -307,8 +323,12 @@ class _LoginContentState extends State<LoginContent>
                         // do something
                         return HomeComic();
                       }));
+                    } else {
+                      errorPass = false;
+                      _formKey.currentState!.validate();
+
+                      setState(() {});
                     }
-                    errorPass = true;
                   })();
                 }
               });

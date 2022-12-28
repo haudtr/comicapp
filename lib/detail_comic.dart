@@ -161,11 +161,13 @@ class _DetailComicState extends State<DetailComic> {
                   const SizedBox(
                     height: 10,
                   ),
-                  Text(constant.user.tenUser,
-                      style: GoogleFonts.readexPro(
-                          color: Colors.black87,
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.w400)),
+                  DefaultTextStyle(
+                    style: GoogleFonts.readexPro(
+                        color: Colors.black87,
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.w400),
+                    child: Text(constant.user.tenUser),
+                  ),
                   const SizedBox(
                     height: 5,
                   ),
