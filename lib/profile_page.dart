@@ -23,11 +23,11 @@ bool favoriteSel = false;
 class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
-    final user = u.user;
+    // final user = u.user;
     var favorite = Provider.of<FavoriteProvider>(context);
     if (iLoading) {
       (() async {
-        await favorite.getComicFavoriteUser(user.id);
+        await favorite.getComicFavoriteUser(u.user.id);
         setState(() {
           iLoading = false;
         });
@@ -42,7 +42,7 @@ class _ProfilePageState extends State<ProfilePage> {
             physics: BouncingScrollPhysics(),
             children: [
               ProfileWidget(
-                imagePath: user.avatar,
+                imagePath: u.user.avatar,
                 onClicked: () {
                   // Navigator.of(context).push(
                   //   MaterialPageRoute(builder: (context) => EditProfilePage()),
@@ -50,7 +50,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 },
               ),
               const SizedBox(height: 24),
-              buildName(user),
+              buildName(u.user),
               const SizedBox(height: 24),
               Center(child: buildUpgradeButton()),
               const SizedBox(height: 24),
@@ -109,7 +109,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             ...favorite.listFavoriteComicUser
                                 .map(
                                   (e) => Padding(
-                                    padding: EdgeInsets.only(bottom: 10),
+                                    padding: const EdgeInsets.only(bottom: 10),
                                     child: SizedBox(
                                       width: double.infinity,
                                       height: 40,
@@ -127,7 +127,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                           Flexible(
                                             child: Text(
                                               e.tenTruyen,
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                 fontSize: 16,
                                               ),
                                             ),
